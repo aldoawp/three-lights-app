@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tlb_app/main.dart';
+part '../widgets/hero_image.dart';
 
 class OnboardingOne extends StatelessWidget {
   const OnboardingOne({super.key});
@@ -12,29 +13,10 @@ class OnboardingOne extends StatelessWidget {
         constraints: constraints,
         child: Column(
           children: [
-            Stack(
-              children: [
-                Image(
-                  image: const AssetImage(ImageResource.onboardBg1),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height / 1.9,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height / 1.9,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.center,
-                      colors: [
-                        ColorResource.bgWhite, // Solid color at the center
-                        Colors.transparent, // Transparent at the top
-                      ],
-                    ),
-                  ),
-                )
-              ],
+            const HeroImage(
+              image: ImageResource.onboardBg1,
             ),
+            
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
