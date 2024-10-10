@@ -22,10 +22,10 @@ class OnboardingContent extends StatelessWidget {
             text: TextSpan(children: [
           TextSpan(
               text: headlineColored,
-              style: TextStyleResource.heading_xl
+              style: TextStyleResource.headingXL
                   .copyWith(color: ColorResource.primary)),
           TextSpan(
-              text: headlineNonColored, style: TextStyleResource.heading_xl),
+              text: headlineNonColored, style: TextStyleResource.headingXL),
         ])),
         const SizedBox(height: 24.0),
         Container(
@@ -36,7 +36,7 @@ class OnboardingContent extends StatelessWidget {
         const SizedBox(height: 24.0),
         Text(
           description,
-          style: TextStyleResource.body_base,
+          style: TextStyleResource.bodyBase,
         ),
       ],
     );

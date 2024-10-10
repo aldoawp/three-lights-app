@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tlb_app/features/onboarding/presentation/pages/onboarding_1_page.dart';
 part 'constants/text_style.dart';
+part 'constants/button_style.dart';
 part 'constants/color.dart';
 part 'constants/image.dart';
 part 'constants/string.dart';
