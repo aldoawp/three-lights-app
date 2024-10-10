@@ -17,35 +17,40 @@ class OnboardingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (type == ButtonType.filled) {
-      return FilledButton(
-        onPressed: () {},
-        style: ButtonStyleResource.primaryButton,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(label, style: TextStyleResource.buttonLabel),
-            const SizedBox(
-              width: 12,
-            ),
-            Icon(icon),
-          ],
+      return Expanded(
+        child: FilledButton(
+          onPressed: () {},
+          style: ButtonStyleResource.primaryButton,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(label, style: TextStyleResource.buttonFilledLabel),
+              const SizedBox(
+                width: 12,
+              ),
+              Icon(icon),
+            ],
+          ),
         ),
       );
     } else {
-      return OutlinedButton(
-        onPressed: () {},
-        style: ButtonStyleResource.secondaryButton,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon),
-            const SizedBox(
-              width: 12,
-            ),
-            Text(
-              label,
-            ),
-          ],
+      return Expanded(
+        child: OutlinedButton(
+          onPressed: () {},
+          style: ButtonStyleResource.secondaryButton,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon),
+              const SizedBox(
+                width: 12,
+              ),
+              Text(
+                label,
+                style: TextStyleResource.buttonOutlinedLabel,
+              ),
+            ],
+          ),
         ),
       );
     }

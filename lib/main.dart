@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tlb_app/features/onboarding/presentation/pages/onboarding_1_page.dart';
+import 'package:tlb_app/features/onboarding/presentation/pages/onboarding_2_page.dart';
 part 'constants/text_style.dart';
 part 'constants/button_style.dart';
 part 'constants/color.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: OnboardingOne(),
+      home: OnboardingTwo(),
     );
   }
 }
