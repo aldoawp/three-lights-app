@@ -1,4 +1,5 @@
-part of '../pages/onboarding_1_page.dart';
+import 'package:flutter/material.dart';
+import 'package:tlb_app/main.dart';
 
 class HeroImage extends StatelessWidget {
   final String image;

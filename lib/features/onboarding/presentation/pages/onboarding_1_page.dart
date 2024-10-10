@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tlb_app/features/onboarding/presentation/widgets/hero_image.dart';
+import 'package:tlb_app/features/onboarding/presentation/widgets/onboarding_content.dart';
 import 'package:tlb_app/main.dart';
-part '../widgets/hero_image.dart';
 
 class OnboardingOne extends StatelessWidget {
   const OnboardingOne({super.key});
@@ -16,7 +17,6 @@ class OnboardingOne extends StatelessWidget {
             const HeroImage(
               image: ImageResource.onboardBg1,
             ),
-            
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -24,32 +24,13 @@ class OnboardingOne extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                            text: TextSpan(children: [
-                          TextSpan(
-                              text: StringResource.onboardOneHeadlineColored,
-                              style: TextStyleResource.heading_xl
-                                  .copyWith(color: ColorResource.primary)),
-                          const TextSpan(
-                              text: StringResource.onboardOneHeadlineNonColored,
-                              style: TextStyleResource.heading_xl),
-                        ])),
-                        const SizedBox(height: 24.0),
-                        Container(
-                          color: ColorResource.text,
-                          height: 1,
-                          width: 60,
-                        ),
-                        const SizedBox(height: 24.0),
-                        const Text(
-                          StringResource.onboardDesc1,
-                          style: TextStyleResource.body_base,
-                        ),
-                      ],
+                    const OnboardingContent(
+                      headlineColored: StringResource.onboardOneHeadlineColored,
+                      headlineNonColored:
+                          StringResource.onboardOneHeadlineNonColored,
+                      description: StringResource.onboardDesc1,
                     ),
+                    
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                       child: FilledButton(
