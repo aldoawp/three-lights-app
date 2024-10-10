@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 part 'constants/text_style.dart';
 part 'constants/color.dart';
+part 'constants/image.dart';
+part 'constants/string.dart';
 
 void main() {
   runApp(const MainApp());

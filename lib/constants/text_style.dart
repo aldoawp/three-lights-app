@@ -5,6 +5,12 @@ class TextStyleResource {
     color: ColorResource.text,
     fontFamily: 'Inter',
     fontWeight: FontWeight.bold,
-    fontSize: 48.0,
+    fontSize: 40.0,
+  );
+  static const TextStyle body_base = TextStyle(
+    color: ColorResource.text,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.normal,
+    fontSize: 14.0,
   );
 }

@@ -1,3 +1,5 @@
+part of '../main.dart';
+
 class StringResource {
   static const String onboardHeadline1 = 'Reservasi Tempat dalam Sekejap';
   static const String onboardHeadline2 =

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tlb_app/constants/image.dart';
 import 'package:tlb_app/main.dart';
 
 void main() {
@@ -39,8 +38,14 @@ class MainScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text("Reservation"),
-                  Text("Description"),
+                  Text(
+                    StringResource.onboardHeadline1,
+                    style: TextStyleResource.heading_xl,
+                  ),
+                  Text(
+                    StringResource.onboardDesc1,
+                    style: TextStyleResource.body_base,
+                  ),
                 ],
               ),
             )
