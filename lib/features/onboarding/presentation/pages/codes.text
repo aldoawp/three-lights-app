@@ -1,0 +1,95 @@
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Column(
+            children: [
+              const Expanded(
+                  child: Image(
+                image: AssetImage('lib/assets/test_barber_1.png'),
+                fit: BoxFit.cover,
+              )),
+              Expanded(
+                  child: Container(
+                color: const Color.fromRGBO(244, 244, 244, 1),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                              text: const TextSpan(children: [
+                            TextSpan(
+                                text: "Reservasi ",
+                                style: TextStyle(
+                                    color: Color.fromRGBO(88, 139, 120, 1),
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.bold)),
+                            TextSpan(
+                                text: "Tempat Dalam Sekejap",
+                                style: TextStyle(
+                                    color: Color(0xFF222222),
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.bold)),
+                          ])),
+                          const SizedBox(
+                            height: 32,
+                          ),
+                          Container(
+                            width: 50,
+                            height: 2,
+                            color: Colors.grey,
+                          ),
+                          const SizedBox(
+                            height: 40,
+                          ),
+                          const Text(
+                            "Cari waktu yang sesuai dan reservasi barber pilihanmu hanya dalam beberapa langkah. Tidak perlu antre, semuanya bisa kamu atur langsung dari aplikasi!",
+                            style: TextStyle(
+                                fontSize: 16, color: Color(0xFF222222)),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 32),
+                        child: FilledButton(
+                          onPressed: () {},
+                          style: const ButtonStyle(
+                              iconSize: WidgetStatePropertyAll(24),
+                              textStyle: WidgetStatePropertyAll(
+                                  TextStyle(fontSize: 16)),
+                              minimumSize: WidgetStatePropertyAll(Size(0, 70)),
+                              backgroundColor:
+                                  WidgetStatePropertyAll(Color(0xFF588B78)),
+                              shape: WidgetStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(4))))),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Lanjut"),
+                              Icon(Icons.arrow_right),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ))
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
