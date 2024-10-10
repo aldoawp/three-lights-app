@@ -1,7 +1,8 @@
 part of '../main.dart';
 
 class StringResource {
-  static const String onboardHeadline1 = 'Reservasi Tempat dalam Sekejap';
+  static const String onboardOneHeadlineColored = 'Reservasi ';
+  static const String onboardOneHeadlineNonColored = 'Tempat dalam Sekejap';
   static const String onboardHeadline2 =
       'Pilih Katalog Gaya Rambut yang Sesuai dengan Karaktermu';
   static const String onboardHeadline3 =
