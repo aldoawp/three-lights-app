@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tlb_app/constants/enum.dart';
 import 'package:tlb_app/main.dart';
 
 class OnboardingButton extends StatelessWidget {

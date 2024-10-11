@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tlb_app/constants/enum.dart';
 import 'package:tlb_app/features/onboarding/presentation/widgets/hero_image.dart';
 import 'package:tlb_app/features/onboarding/presentation/widgets/onboarding_button.dart';
 import 'package:tlb_app/features/onboarding/presentation/widgets/onboarding_content.dart';

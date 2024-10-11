@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   bloc: ^8.1.4
   equatable: ^2.0.5
+  flutter_native_splash: ^2.4.1
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +22,17 @@ flutter:
   uses-material-design: true
   assets:
     - lib/assets/images/
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  
+  background_image: "lib/assets/splash/background_image.png"
+  image: "lib/assets/splash/foreground_logo.png"
+
+  android_12:
+    color: "#588b78"
+    image: "lib/assets/splash/foreground_logo.png"
+    icon_background_color: "#588b78"
+

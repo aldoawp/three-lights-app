@@ -7,6 +7,7 @@ part 'constants/button_style.dart';
 part 'constants/color.dart';
 part 'constants/image.dart';
 part 'constants/string.dart';
+part 'constants/enum.dart';
 
 void main() {
   runApp(const MyApp());
