@@ -1,4 +1,4 @@
-part of '../main.dart';
+part of '../../main.dart';
 
 class ColorResource {
   static const Color bgWhite = Color(0xFFF4F4F4);

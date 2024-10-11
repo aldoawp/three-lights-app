@@ -1,4 +1,4 @@
-part of '../main.dart';
+part of '../../main.dart';
 
 class TextStyleResource {
   static const TextStyle headingXL = TextStyle(

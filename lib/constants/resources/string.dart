@@ -1,4 +1,4 @@
-part of '../main.dart';
+part of '../../main.dart';
 
 class StringResource {
   static const String onboardOneHeadlineColored = 'Reservasi ';
