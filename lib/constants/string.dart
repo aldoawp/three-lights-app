@@ -6,8 +6,9 @@ class StringResource {
   static const String onboardTwoHeadlineColored = 'Pilih Katalog ';
   static const String onboardTwoHeadlineNonColored =
       'Gaya Rambut yang Sesuai dengan Karaktermu';
-  static const String onboardThreeHeadlineColored = 'Gratis 1x potong ';
-  static const String onboardThreeHeadlineNonColored = 'setelah 5x kunjungan';
+  static const String onboardThreeHeadlineColored = 'Gratis 1x pangkas ';
+  static const String onboardThreeHeadlineNonColored =
+      'rambut setelah 5x kunjungan';
   static const String onboardDesc1 =
       'Cari waktu yang sesuai dan reservasi barber pilihanmu hanya dalam beberapa langkah. Tidak perlu antre, semuanya bisa kamu atur langsung dari aplikasi!';
   static const String onboardDesc2 =

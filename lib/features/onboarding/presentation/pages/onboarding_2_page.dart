@@ -17,6 +17,8 @@ class OnboardingTwo extends StatelessWidget {
           children: [
             HeroImage(
               image: ImageResource.onboardBg2,
+              imageSize: 2.1,
+              decorBoxSize: 2.09,
             ),
             Expanded(
               child: Padding(
