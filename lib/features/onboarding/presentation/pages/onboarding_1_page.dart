@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tlb_app/features/onboarding/presentation/widgets/hero_image.dart';
 import 'package:tlb_app/features/onboarding/presentation/widgets/onboarding_button.dart';
 import 'package:tlb_app/features/onboarding/presentation/widgets/onboarding_content.dart';
-import 'package:tlb_app/main.dart';
+import 'package:tlb_app/my_app.dart';
 
 class OnboardingOne extends StatelessWidget {
   const OnboardingOne({super.key});

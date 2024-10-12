@@ -1,4 +1,4 @@
-part of '../../main.dart';
+part of '../../my_app.dart';
 
 enum Routes {
   // Onboarding Section

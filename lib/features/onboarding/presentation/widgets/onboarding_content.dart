@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tlb_app/main.dart';
+import 'package:tlb_app/my_app.dart';
 
 class OnboardingContent extends StatelessWidget {
-  final String headlineColored;
+  final String? headlineColored;
   final String headlineNonColored;
   final String description;
 
   const OnboardingContent({
     super.key,
-    required this.headlineColored,
+    this.headlineColored,
     required this.headlineNonColored,
     required this.description,
   });

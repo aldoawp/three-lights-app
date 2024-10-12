@@ -1,4 +1,4 @@
-part of '../../main.dart';
+part of '../../my_app.dart';
 
 class ImageResource {
   static const String logo = 'lib/assets/images/logo.png';
