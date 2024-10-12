@@ -9,46 +9,55 @@ class OnboardingTwo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage(ImageResource.onboardBg3), context);
+
     return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
       return Container(
         color: ColorResource.bgWhite,
         constraints: constraints,
-        child: const Column(
+        child: Column(
           children: [
-            HeroImage(
+            const HeroImage(
               image: ImageResource.onboardBg2,
               imageSize: 2.1,
               decorBoxSize: 2.09,
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    OnboardingContent(
+                    const OnboardingContent(
                       headlineColored: StringResource.onboardTwoHeadlineColored,
                       headlineNonColored:
                           StringResource.onboardTwoHeadlineNonColored,
                       description: StringResource.onboardDesc2,
                     ),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                         child: Row(
                           children: [
                             OnboardingButton(
                               label: StringResource.prevButton,
                               type: ButtonType.outlined,
                               icon: Icons.arrow_circle_left_outlined,
+                              onPressedAction: () {
+                                Navigator.pop(context);
+                              },
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 12,
                             ),
                             OnboardingButton(
                               label: StringResource.nextButton,
                               type: ButtonType.filled,
                               icon: Icons.arrow_circle_right,
+                              onPressedAction: () {
+                                Navigator.pushNamed(
+                                    context, Routes.onboardingThree.name);
+                              },
                             ),
                           ],
                         )),

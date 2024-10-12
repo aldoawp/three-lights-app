@@ -5,12 +5,14 @@ class OnboardingButton extends StatelessWidget {
   final String label;
   final ButtonType type;
   final IconData icon;
+  final VoidCallback onPressedAction;
 
   const OnboardingButton({
     super.key,
     required this.label,
     required this.type,
     required this.icon,
+    required this.onPressedAction,
   });
 
   @override
@@ -18,7 +20,7 @@ class OnboardingButton extends StatelessWidget {
     if (type == ButtonType.filled) {
       return Expanded(
         child: FilledButton(
-          onPressed: () {},
+          onPressed: onPressedAction,
           style: ButtonStyleResource.primaryButton,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -35,7 +37,7 @@ class OnboardingButton extends StatelessWidget {
     } else {
       return Expanded(
         child: OutlinedButton(
-          onPressed: () {},
+          onPressed: onPressedAction,
           style: ButtonStyleResource.secondaryButton,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

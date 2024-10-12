@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tlb_app/main.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class HeroImage extends StatelessWidget {
   final String image;
@@ -17,7 +18,9 @@ class HeroImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image(
+        FadeInImage(
+          placeholder: MemoryImage(kTransparentImage),
+          fadeInDuration: const Duration(milliseconds: 200),
           image: AssetImage(image),
           fit: BoxFit.cover,
           width: double.infinity,

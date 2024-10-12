@@ -9,36 +9,42 @@ class OnboardingOne extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage(ImageResource.onboardBg2), context);
+
     return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
       return Container(
         color: ColorResource.bgWhite,
         constraints: constraints,
-        child: const Column(
+        child: Column(
           children: [
-            HeroImage(
+            const HeroImage(
               image: ImageResource.onboardBg1,
               imageSize: 1.9,
               decorBoxSize: 1.9,
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    OnboardingContent(
+                    const OnboardingContent(
                       headlineColored: StringResource.onboardOneHeadlineColored,
                       headlineNonColored:
                           StringResource.onboardOneHeadlineNonColored,
                       description: StringResource.onboardDesc1,
                     ),
                     Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                         child: OnboardingButton(
                           label: StringResource.nextButton,
                           type: ButtonType.filled,
                           icon: Icons.arrow_circle_right,
+                          onPressedAction: () {
+                            Navigator.pushNamed(
+                                context, Routes.onboardingTwo.name);
+                          },
                         )),
                   ],
                 ),
