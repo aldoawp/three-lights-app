@@ -10,7 +10,14 @@ class ReservationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Reservation Page"),
+        title: Text(
+          "Reservation Page",
+          style: TextStyleResource.appBarHeadline,
+        ),
+        toolbarHeight: 80,
+        flexibleSpace: Container(
+          color: ColorResource.primary,
+        ),
       ),
       bottomNavigationBar: NavBar(
         currentIndex: reservationPageIndex,

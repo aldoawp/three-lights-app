@@ -7,6 +7,10 @@ class TextStyleResource {
     fontWeight: FontWeight.bold,
     fontSize: 40.0,
   );
+  static const TextStyle appBarHeadline = TextStyle(
+    color: ColorResource.offWhite,
+    fontFamily: 'Inter',
+  );
   static const TextStyle bodyBase = TextStyle(
     color: ColorResource.text,
     fontFamily: 'Inter',

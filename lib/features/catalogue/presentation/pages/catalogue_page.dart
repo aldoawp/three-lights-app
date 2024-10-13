@@ -10,8 +10,14 @@ class CataloguePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Catalogue Page"),
-        
+        title: Text(
+          "Catalogue Page",
+          style: TextStyleResource.appBarHeadline,
+        ),
+        toolbarHeight: 80,
+        flexibleSpace: Container(
+          color: ColorResource.primary,
+        ),
       ),
       bottomNavigationBar: NavBar(
         currentIndex: cataloguePageIndex,

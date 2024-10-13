@@ -10,7 +10,14 @@ class LoyaltyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Loyalty Page"),
+        title: Text(
+          "Loyalty Page",
+          style: TextStyleResource.appBarHeadline,
+        ),
+        toolbarHeight: 80,
+        flexibleSpace: Container(
+          color: ColorResource.primary,
+        ),
       ),
       bottomNavigationBar: NavBar(currentIndex: loyaltyPageIndex),
       body: Center(

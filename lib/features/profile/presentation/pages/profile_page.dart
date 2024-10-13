@@ -10,7 +10,14 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile Page"),
+        title: Text(
+          "Reservation Page",
+          style: TextStyleResource.appBarHeadline,
+        ),
+        toolbarHeight: 80,
+        flexibleSpace: Container(
+          color: ColorResource.primary,
+        ),
       ),
       bottomNavigationBar: NavBar(
         currentIndex: profilePageIndex,
