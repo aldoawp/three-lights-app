@@ -1,15 +1,18 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:tlb_app/features/auth/presentation/pages/login_page.dart';
+import 'package:tlb_app/features/catalogue/presentation/bloc/catalogue_bloc.dart';
 import 'package:tlb_app/features/catalogue/presentation/pages/catalogue_page.dart';
+import 'package:tlb_app/features/loyalty/presentation/bloc/loyalty_bloc.dart';
 import 'package:tlb_app/features/loyalty/presentation/pages/loyalty_page.dart';
 import 'package:tlb_app/features/onboarding/presentation/pages/onboarding_1_page.dart';
 import 'package:tlb_app/features/onboarding/presentation/pages/onboarding_2_page.dart';
 import 'package:tlb_app/features/onboarding/presentation/pages/onboarding_3_page.dart';
+import 'package:tlb_app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tlb_app/features/profile/presentation/pages/profile_page.dart';
+import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.dart';
 import 'package:tlb_app/features/reservation/presentation/pages/reservation_page.dart';
 
 part 'constants/styles/text_style.dart';
@@ -26,18 +29,39 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        Routes.onboardingTwoPage.name: (context) => const OnboardingTwoPage(),
-        Routes.onboardingThreePage.name: (context) =>
-            const OnboardingThreePage(),
-        Routes.loginPage.name: (context) => const OnboardingThreePage(),
-        Routes.reservationPage.name: (context) => const ReservationPage(),
-        Routes.cataloguePage.name: (context) => const CataloguePage(),
-        Routes.loyaltyPage.name: (context) => const LoyaltyPage(),
-        Routes.profilePage.name: (context) => const ProfilePage(),
-      },
-      home: const ReservationPage(),
-    );
+    // Check whether the user is logged in or not.
+    // If true, then onboarding will be skipped.
+    final Session? currentSession =
+        Supabase.instance.client.auth.currentSession;
+    Widget homeWidget;
+    if (currentSession != null) {
+      homeWidget = ReservationPage();
+    } else {
+      homeWidget = OnboardingOnePage();
+    }
+
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (BuildContext context) => AuthBloc()),
+          BlocProvider(create: (BuildContext context) => ReservationBloc()),
+          BlocProvider(create: (BuildContext context) => CatalogueBloc()),
+          BlocProvider(create: (BuildContext context) => LoyaltyBloc()),
+          BlocProvider(create: (BuildContext context) => ProfileBloc()),
+        ],
+        // This is the central routing system
+        child: MaterialApp(
+          routes: {
+            Routes.onboardingTwoPage.name: (context) =>
+                const OnboardingTwoPage(),
+            Routes.onboardingThreePage.name: (context) =>
+                const OnboardingThreePage(),
+            Routes.loginPage.name: (context) => const LoginPage(),
+            Routes.reservationPage.name: (context) => const ReservationPage(),
+            Routes.cataloguePage.name: (context) => const CataloguePage(),
+            Routes.loyaltyPage.name: (context) => const LoyaltyPage(),
+            Routes.profilePage.name: (context) => const ProfilePage(),
+          },
+          home: homeWidget,
+        ));
   }
 }

@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tlb_app/constants/navigations/navigation_index.dart';
-import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.dart';
 import 'package:tlb_app/features/reservations/presentation/bloc/reservations_bloc.dart';
 import 'package:tlb_app/my_app.dart';
 import 'package:tlb_app/global_widget.dart';
 
-class ReservationPage extends StatelessWidget {
-  const ReservationPage({super.key});
+class ReservationsPage extends StatelessWidget {
+  const ReservationsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReservationBloc, ReservationState>(
-        bloc: ReservationBloc(),
+    return BlocBuilder<ReservationsBloc, ReservationsState>(
+        bloc: ReservationsBloc(),
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(

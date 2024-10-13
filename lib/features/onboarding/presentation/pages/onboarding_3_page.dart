@@ -11,6 +11,8 @@ class OnboardingThreePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage(ImageResource.loginBg), context);
+
     return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
       return Container(
         color: ColorResource.bgWhite,
@@ -56,7 +58,8 @@ class OnboardingThreePage extends StatelessWidget {
                               type: ButtonType.filled,
                               icon: Icons.arrow_circle_right,
                               onPressedAction: () {
-                                log("Should be redirected to login page");
+                                Navigator.pushNamed(
+                                    context, Routes.loginPage.name);
                               },
                             ),
                           ],

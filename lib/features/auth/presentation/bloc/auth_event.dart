@@ -6,3 +6,9 @@ abstract class AuthEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+final class GoogleSignInEvent extends AuthEvent {}
+
+final class AnonymousSignInEvent extends AuthEvent {}
+
+final class SignedInEvent extends AuthEvent {}
