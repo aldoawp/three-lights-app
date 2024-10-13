@@ -25,4 +25,11 @@ class StringResource {
       "Jangan lewatkan berbagai penawaran dan benefit dengan menjadi langganan di barbershop kami!";
   static const String loginWithGoogle = "Masuk dengan Google";
   static const String loginAsGuest = "Masuk sebagai Guest";
+
+  // Navigation Bar
+  static const String reservation = "Reservasi";
+  static const String catalogue = "Katalog";
+  static const String loyalty = "Langganan";
+  static const String profile = "Profil";
+
 }

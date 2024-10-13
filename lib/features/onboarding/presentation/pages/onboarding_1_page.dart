@@ -4,8 +4,8 @@ import 'package:tlb_app/features/onboarding/presentation/widgets/onboarding_butt
 import 'package:tlb_app/features/onboarding/presentation/widgets/onboarding_content.dart';
 import 'package:tlb_app/my_app.dart';
 
-class OnboardingOne extends StatelessWidget {
-  const OnboardingOne({super.key});
+class OnboardingOnePage extends StatelessWidget {
+  const OnboardingOnePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class OnboardingOne extends StatelessWidget {
                           icon: Icons.arrow_circle_right,
                           onPressedAction: () {
                             Navigator.pushNamed(
-                                context, Routes.onboardingTwo.name);
+                                context, Routes.onboardingTwoPage.name);
                           },
                         )),
                   ],

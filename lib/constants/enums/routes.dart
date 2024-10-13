@@ -1,15 +1,27 @@
 part of '../../my_app.dart';
 
 enum Routes {
-  // Onboarding Section
-  onboardingTwo,
-  onboardingThree,
+  // Onboarding Pages
+  onboardingTwoPage,
+  onboardingThreePage,
 
-  // Reservation Section
+  // Login Page
+  loginPage,
 
-  // Catalogue Section
+  // Reservation Pages
+  reservationPage,
+  bookingPage,
 
-  // Loyalty Section
+  // Catalogue Pages
+  cataloguePage,
+  savedCataloguePage,
+  askAiPage,
+  searchResultPage,
 
-  // Profile Section
+  // Loyalty Pages
+  loyaltyPage,
+
+  // Profile Pages
+  profilePage,
+  editProfilePage,
 }

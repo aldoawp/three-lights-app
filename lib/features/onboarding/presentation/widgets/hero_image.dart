@@ -18,9 +18,7 @@ class HeroImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        FadeInImage(
-          placeholder: MemoryImage(kTransparentImage),
-          fadeInDuration: const Duration(milliseconds: 200),
+        Image(
           image: AssetImage(image),
           fit: BoxFit.cover,
           width: double.infinity,

@@ -6,8 +6,8 @@ import 'package:tlb_app/features/onboarding/presentation/widgets/onboarding_butt
 import 'package:tlb_app/features/onboarding/presentation/widgets/onboarding_content.dart';
 import 'package:tlb_app/my_app.dart';
 
-class OnboardingThree extends StatelessWidget {
-  const OnboardingThree({super.key});
+class OnboardingThreePage extends StatelessWidget {
+  const OnboardingThreePage({super.key});
 
   @override
   Widget build(BuildContext context) {
