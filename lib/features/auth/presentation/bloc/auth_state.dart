@@ -9,21 +9,12 @@ abstract class AuthState extends Equatable {
 
 final class AuthInitial extends AuthState {}
 
-final class Authenticated extends AuthState {
-  // final User? user;
-  // dynamic profileImageUrl;
-  // dynamic fullName;
+final class Authenticated extends AuthState {}
 
-  // Authenticated({
-  //   required this.user,
-  // }) {
-  //   profileImageUrl = user?.userMetadata?['avatar_url'];
-  //   fullName = user?.userMetadata?['full_name'];
-  // }
-}
+final class Unauthenticated extends AuthState {}
 
 final class AuthError extends AuthState {
   final String error;
 
-  AuthError({required this.error});
+  const AuthError({required this.error});
 }

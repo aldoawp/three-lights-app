@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tlb_app/features/onboarding/presentation/widgets/hero_image.dart';
 import 'package:tlb_app/features/onboarding/presentation/widgets/onboarding_button.dart';

@@ -16,6 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<GoogleSignInEvent>(_googleSignIn);
     on<AnonymousSignInEvent>(_anonymousSignIn);
     on<SignedInEvent>(_signedIn);
+    on<SignedOutEvent>(_signedOut);
   }
 
   void _setUpAuthListener() {
@@ -23,12 +24,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final event = data.event;
       if (event == AuthChangeEvent.signedIn) {
         add(SignedInEvent());
+      } else if (event == AuthChangeEvent.signedOut) {
+        add(SignedOutEvent());
       }
     });
   }
 
   void _signedIn(event, emit) {
     emit(Authenticated());
+  }
+
+  void _signedOut(event, emit) {
+    emit(Unauthenticated());
   }
 
   Future<void> _googleSignIn(AuthEvent event, Emitter<AuthState> emit) async {
