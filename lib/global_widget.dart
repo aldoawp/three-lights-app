@@ -33,11 +33,11 @@ class _NavBarState extends State<NavBar> {
         ),
         NavigationDestination(
           icon: Icon(Icons.star_outline),
-          label: StringResource.reservation,
+          label: StringResource.loyalty,
         ),
         NavigationDestination(
           icon: Icon(Icons.person_outline),
-          label: StringResource.reservation,
+          label: StringResource.profile,
         ),
       ],
       onDestinationSelected: (int index) {
