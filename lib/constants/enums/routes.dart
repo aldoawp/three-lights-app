@@ -2,6 +2,7 @@ part of '../../my_app.dart';
 
 enum Routes {
   // Onboarding Pages
+  onboardingOnePage,
   onboardingTwoPage,
   onboardingThreePage,
 
