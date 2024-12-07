@@ -13,6 +13,7 @@ import 'package:tlb_app/features/onboarding/presentation/pages/onboarding_3_page
 import 'package:tlb_app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tlb_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.dart';
+import 'package:tlb_app/features/reservation/presentation/pages/book_appointment_page.dart';
 import 'package:tlb_app/features/reservation/presentation/pages/reservation_page.dart';
 
 part 'constants/styles/text_style.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
             Routes.cataloguePage.name: (context) => const CataloguePage(),
             Routes.loyaltyPage.name: (context) => const LoyaltyPage(),
             Routes.profilePage.name: (context) => const ProfilePage(),
+            Routes.bookingPage.name: (context) => const BookAppointmentPage(),
           },
           home: homeWidget,
         ));
