@@ -26,9 +26,9 @@ class ProfilePage extends StatelessWidget {
                 color: ColorResource.primary,
               ),
             ),
-            bottomNavigationBar: NavBar(
-              currentIndex: profilePageIndex,
-            ),
+            // bottomNavigationBar: NavBar(
+            //   currentIndex: profilePageIndex,
+            // ),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -14,3 +14,9 @@ final class AnonymousSignInEvent extends AuthEvent {}
 final class SignedInEvent extends AuthEvent {}
 
 final class SignedOutEvent extends AuthEvent {}
+
+final class AuthIsUserLoggedIn extends AuthEvent {}
+
+final class UserSignInAnonymousEvent extends AuthEvent {}
+
+final class UserSignInGoogleEvent extends AuthEvent {}

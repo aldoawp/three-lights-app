@@ -9,7 +9,13 @@ abstract class AuthState extends Equatable {
 
 final class AuthInitial extends AuthState {}
 
-final class Authenticated extends AuthState {}
+final class AuthLoading extends AuthState {}
+
+final class Authenticated extends AuthState {
+  final entity.User user;
+
+  Authenticated({required this.user});
+}
 
 final class Unauthenticated extends AuthState {}
 

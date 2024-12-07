@@ -27,9 +27,9 @@ class ReservationPage extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: NavBar(
-              currentIndex: reservationPageIndex,
-            ),
+            // bottomNavigationBar: NavBar(
+            //   currentIndex: reservationPageIndex,
+            // ),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
