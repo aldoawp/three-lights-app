@@ -19,7 +19,7 @@ class LoyaltyPage extends StatelessWidget {
           color: ColorResource.primary,
         ),
       ),
-      bottomNavigationBar: NavBar(currentIndex: loyaltyPageIndex),
+      // bottomNavigationBar: NavBar(currentIndex: loyaltyPageIndex),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

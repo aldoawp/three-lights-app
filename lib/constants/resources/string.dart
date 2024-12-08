@@ -32,4 +32,7 @@ class StringResource {
   static const String loyalty = "Langganan";
   static const String profile = "Profil";
 
+  // AskAI Page
+  static const String introAskAI =
+      'Dapatkan rekomendasi gaya rambut yang paling cocok untukmu dengan menjawab beberapa pertanyaan singkat. AI kami akan menyesuaikan pilihan berdasarkan bentuk wajah, tipe rambut, hingga kepribadianmu!';
 }

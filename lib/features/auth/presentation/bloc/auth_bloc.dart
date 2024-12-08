@@ -1,73 +1,87 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:tlb_app/core/usecases/usecase.dart';
+import 'package:tlb_app/features/auth/domain/entities/user.dart' as entity;
+import 'package:tlb_app/features/auth/domain/usecases/current_user.dart';
+import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_anonymous.dart';
+import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_google.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  SupabaseClient? supabase;
+  final UserSignInAnonymous userSignInAnonymously;
+  final UserSignInGoogle userSignInGoogle;
+  final CurrentUser currentUser;
 
-  AuthBloc([this.supabase]) : super(AuthInitial()) {
-    supabase = Supabase.instance.client;
-    _setUpAuthListener();
-    on<GoogleSignInEvent>(_googleSignIn);
-    on<AnonymousSignInEvent>(_anonymousSignIn);
-    on<SignedInEvent>(_signedIn);
-    on<SignedOutEvent>(_signedOut);
+  AuthBloc(
+      {required this.userSignInAnonymously,
+      required this.userSignInGoogle,
+      required this.currentUser})
+      : super(AuthInitial()) {
+    // _setUpAuthListener();
+    // on<SignedInEvent>(_signedIn);
+    // on<SignedOutEvent>(_signedOut);
+    on<AuthIsUserLoggedIn>(_isUserLoggedIn);
+    on<UserSignInAnonymousEvent>(_onSignInAnonymous);
+    on<UserSignInGoogleEvent>(_onSignInGoogle);
+  }
+  Future<void> _isUserLoggedIn(
+      AuthIsUserLoggedIn event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    final user = await currentUser.call(NoParams());
+    user.fold(
+      (failure) {
+        return emit(AuthError(error: failure.message));
+      },
+      (user) {
+        print(user);
+        return emit(Authenticated(user: user));
+      },
+    );
   }
 
-  void _setUpAuthListener() {
-    supabase!.auth.onAuthStateChange.listen((data) {
-      final event = data.event;
-      if (event == AuthChangeEvent.signedIn) {
-        add(SignedInEvent());
-      } else if (event == AuthChangeEvent.signedOut) {
-        add(SignedOutEvent());
-      }
-    });
+  Future<void> _onSignInAnonymous(
+      UserSignInAnonymousEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    final res = await userSignInAnonymously.call(NoParams());
+
+    res.fold(
+      (failure) {
+        return emit(AuthError(error: failure.message));
+      },
+      (user) {
+        return emit(Authenticated(user: user));
+      },
+    );
   }
 
-  void _signedIn(event, emit) {
-    emit(Authenticated());
+  Future<void> _onSignInGoogle(
+      UserSignInGoogleEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    final res = await userSignInGoogle.call(NoParams());
+
+    res.fold(
+      (l) => emit(AuthError(error: l.message)),
+      (r) => emit(Authenticated(user: r)),
+    );
   }
 
-  void _signedOut(event, emit) {
-    emit(Unauthenticated());
-  }
+  // void _setUpAuthListener() {
+  //   supabase!.auth.onAuthStateChange.listen((data) {
+  //     final event = data.event;
+  //     if (event == AuthChangeEvent.signedIn) {
+  //       add(SignedInEvent());
+  //     } else if (event == AuthChangeEvent.signedOut) {
+  //       add(SignedOutEvent());
+  //     }
+  //   });
+  // }
 
-  Future<void> _googleSignIn(AuthEvent event, Emitter<AuthState> emit) async {
-    try {
-      final webClientId = dotenv.env['WEB_CLIENT_ID'];
-      final iosClientId = dotenv.env['IOS_CLIENT_ID'];
-      final GoogleSignIn googleSignIn = GoogleSignIn(
-        clientId: iosClientId,
-        serverClientId: webClientId,
-      );
-      final googleUser = await googleSignIn.signIn();
-      final googleAuth = await googleUser!.authentication;
-      final accessToken = googleAuth.accessToken;
-      final idToken = googleAuth.idToken;
+  // void _signedIn(event, emit) {
+  //   emit(Authenticated());
+  // }
 
-      if (accessToken == null || idToken == null) {
-        emit(AuthError(error: "No access token or ID token found"));
-        throw AuthException("No access token or ID token found");
-      }
-
-      await supabase!.auth.signInWithIdToken(
-          provider: OAuthProvider.google,
-          idToken: idToken,
-          accessToken: accessToken);
-    } catch (error) {
-      emit(AuthError(error: error.toString()));
-      throw AuthException(error.toString());
-    }
-  }
-
-  Future<void> _anonymousSignIn(
-      AuthEvent event, Emitter<AuthState> emit) async {
-    await supabase!.auth.signInAnonymously();
-  }
+  // void _signedOut(event, emit) {
+  //   emit(Unauthenticated());
 }
