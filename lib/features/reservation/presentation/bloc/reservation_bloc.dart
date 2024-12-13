@@ -18,15 +18,19 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
     on<LoadReservationHistoryEvents>((event, emit) async {
       emit(ReservationLoadingState());
       try {
-        final history =
+        final allReservations =
             await getReservationHistoryUseCase.execute(event.userId);
         final ongoing =
-            history.where((res) => res.status == 'ongoing').toList();
+            allReservations.where((res) => res.status == 'ongoing').toList();
         final completed =
-            history.where((res) => res.status == 'completed').toList();
+            allReservations.where((res) => res.status == 'completed').toList();
         final cancelled =
-            history.where((res) => res.status == 'cancelled').toList();
+            allReservations.where((res) => res.status == 'canceled').toList();
 
+        final history = [
+          ...completed,
+          ...cancelled,
+        ];
         emit(ReservationLoadedState(
             ongoing: ongoing,
             history: history,

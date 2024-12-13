@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:tlb_app/core/error/exceptions.dart';
+import 'package:tlb_app/core/error/failures.dart';
 import 'package:tlb_app/features/reservation/data/datasources/reservation_remote_datasource.dart';
 import 'package:tlb_app/features/reservation/data/models/reservation_model.dart';
 import 'package:tlb_app/features/reservation/domain/entities/reservation.dart';
@@ -70,6 +73,17 @@ class ReservationRepositoryImpl implements ReservationRepository {
                 status: model.status,
               ))
           .toList();
+    } catch (e) {
+      debugPrint('Error getting reservation history: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> getReservationOptions() async {
+    try {
+      final result = await remoteDatasource.getReservationOption();
+      return Right(result);
     } catch (e) {
       debugPrint('Error getting reservation history: $e');
       rethrow;

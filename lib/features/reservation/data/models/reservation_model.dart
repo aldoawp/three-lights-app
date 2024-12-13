@@ -65,3 +65,77 @@ class ReservationModel extends Reservation {
     };
   }
 }
+
+class ServiceModel {
+  final int id;
+  final String name;
+  final int price;
+
+  ServiceModel({
+    required this.id,
+    required this.name,
+    required this.price,
+  });
+
+  factory ServiceModel.fromJson(Map<String, dynamic> json) {
+    return ServiceModel(
+      id: json['service_id'] ?? 0,
+      name: json['name'] ?? '',
+      price: json['price'] ?? 0,
+    );
+  }
+}
+
+class BarberModel {
+  final int id;
+  final String firstName;
+  final String lastName;
+
+  BarberModel({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+  });
+
+  factory BarberModel.fromJson(Map<String, dynamic> json) {
+    return BarberModel(
+      id: json['barber_id'] ?? 0,
+      firstName: json['first_name'] ?? '',
+      lastName: json['last_name'] ?? '',
+    );
+  }
+}
+
+class AvailableDateModel {
+  final int id;
+  final String date;
+
+  AvailableDateModel({
+    required this.id,
+    required this.date,
+  });
+
+  factory AvailableDateModel.fromJson(Map<String, dynamic> json) {
+    return AvailableDateModel(
+      id: json['date_id'] ?? 0,
+      date: json['date'] ?? '',
+    );
+  }
+}
+
+class AvailableHourModel {
+  final int id;
+  final String hour;
+
+  AvailableHourModel({
+    required this.id,
+    required this.hour,
+  });
+
+  factory AvailableHourModel.fromJson(Map<String, dynamic> json) {
+    return AvailableHourModel(
+      id: json['hour_id'] ?? 0,
+      hour: json['hour'] ?? '',
+    );
+  }
+}

@@ -6,6 +6,8 @@ import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.
 import 'package:tlb_app/features/reservation/presentation/bloc/reservation_event.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/reservation_state.dart';
 import 'package:tlb_app/features/reservation/presentation/pages/book_appointment_page.dart';
+import 'package:tlb_app/features/reservation/presentation/widgets/reservation_app_bar.dart';
+import 'package:tlb_app/features/reservation/presentation/widgets/history_widget.dart';
 import 'package:tlb_app/features/reservation/presentation/widgets/invoice_widget.dart';
 
 class ReservationPage extends StatefulWidget {
@@ -29,8 +31,10 @@ class _ReservationPageState extends State<ReservationPage> {
   Widget build(BuildContext context) {
     final User currUser = context.read<AuthBloc>().state.user!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(currUser.uid),
+      appBar: ReservationAppBar(
+        userName: "Guest",
+        userStatus: "Silahkan sign-in di sini",
+        userImageUrl: null,
       ),
       body: BlocBuilder<ReservationBloc, ReservationState>(
         builder: (context, state) {
@@ -43,6 +47,23 @@ class _ReservationPageState extends State<ReservationPage> {
             return SingleChildScrollView(
               child: Column(
                 children: [
+                  const SizedBox(height: 8.0),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.access_time, color: Colors.grey[600]),
+                        const SizedBox(width: 8),
+                        Text(
+                          "Reservasi",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   // Ongoing reservation
                   if (ongoing.isEmpty)
                     ElevatedButton(
@@ -56,30 +77,11 @@ class _ReservationPageState extends State<ReservationPage> {
                       child: const Text('Create Reservation'),
                     )
                   else
-                    // Display ongoing reservations dynamically using InvoiceWidget
                     Column(
                       children: ongoing.map((reservation) {
                         return InvoiceWidget(
-                          invoiceNumber:
-                              'INV-${reservation.reservationId}', // Contoh nomor invoice
-                          date:
-                              '09-12-2024', // Tentukan tanggal sesuai data Anda
-                          barberName:
-                              '${reservation.barberFirstName} ${reservation.barberLastName}',
-                          serviceName: reservation.serviceName,
-                          appointmentDate: reservation.dateData.toString(),
-                          appointmentTime: reservation.hourData.toString(),
-                        );
-                      }).toList(),
-                    ),
-
-                  // History reservation (similar display structure)
-                  if (history.isNotEmpty)
-                    Column(
-                      children: history.map((reservation) {
-                        return InvoiceWidget(
                           invoiceNumber: 'INV-${reservation.reservationId}',
-                          date: '09-12-2024', // Tanggal yang diambil dari data
+                          date: reservation.dateData.toString(),
                           barberName:
                               '${reservation.barberFirstName} ${reservation.barberLastName}',
                           serviceName: reservation.serviceName,
@@ -88,6 +90,36 @@ class _ReservationPageState extends State<ReservationPage> {
                         );
                       }).toList(),
                     ),
+                  const SizedBox(height: 35.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.history, color: Colors.grey[600]),
+                        const SizedBox(width: 8),
+                        Text(
+                          "Riwayat",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ReservationHistoryWidget(
+                    history: history.map((item) {
+                      return {
+                        'reservationId': item.reservationId,
+                        'barberName':
+                            '${item.barberFirstName} ${item.barberLastName}',
+                        'serviceName': item.serviceName,
+                        'appointmentDate': item.dateData,
+                        'appointmentTime': item.hourData,
+                        'status': item.status,
+                      };
+                    }).toList(),
+                  ),
                 ],
               ),
             );
