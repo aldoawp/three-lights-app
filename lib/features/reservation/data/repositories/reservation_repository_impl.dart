@@ -16,12 +16,6 @@ class ReservationRepositoryImpl implements ReservationRepository {
   }
 
   @override
-  Future<void> createReservation(Reservation reservation) async {
-    final reservationModel = ReservationModel.fromDomain(reservation);
-    await remoteDataSource.createReservation(reservationModel);
-  }
-
-  @override
   Future<void> cancelReservation(int reservationId) async {
     try {
       await remoteDataSource.cancelReservation(reservationId);

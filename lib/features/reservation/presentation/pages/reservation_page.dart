@@ -80,13 +80,18 @@ class _ReservationPageState extends State<ReservationPage> {
           ongoingReservations.isEmpty
               ? Center(
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => const BookingPage(),
                         ),
                       );
+                      if (result == true) {
+                        context
+                            .read<ReservationBloc>()
+                            .add(LoadReservationHistoryEvents(currentUser.uid));
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(

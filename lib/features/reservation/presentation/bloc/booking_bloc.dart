@@ -1,12 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tlb_app/features/reservation/domain/repositories/booking_repository.dart';
+import 'package:tlb_app/features/reservation/domain/repositories/reservation_repository.dart';
 import 'package:tlb_app/features/reservation/domain/usecases/get_booking_data.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/booking_event.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/booking_state.dart';
 
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   final FetchBookingDataUseCase fetchBookingDataUseCase;
+  final BookingRepository repository;
 
-  BookingBloc({required this.fetchBookingDataUseCase})
+  BookingBloc({required this.fetchBookingDataUseCase, required this.repository})
       : super(BookingInitial()) {
     on<FetchBookingData>((event, emit) async {
       emit(BookingLoading());
@@ -43,6 +46,17 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       if (state is BookingLoaded) {
         final currentState = state as BookingLoaded;
         emit(currentState.copyWith(selectedService: event.service));
+      }
+    });
+
+    on<CreateReservation>((event, emit) async {
+      try {
+        // Assuming `createReservation` is part of a repository injected into the bloc
+        await repository.createReservation(event.reservationData);
+        emit(BookingSuccess()); // Add a success state for reservation creation
+      } catch (e) {
+        emit(BookingError(
+            message: "Failed to create reservation: ${e.toString()}"));
       }
     });
   }

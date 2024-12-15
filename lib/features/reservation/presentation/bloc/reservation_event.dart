@@ -23,12 +23,6 @@ class LoadReservationHistory extends ReservationEvent {
   LoadReservationHistory({required this.userId});
 }
 
-class CreateReservationEvent extends ReservationEvent {
-  final Reservation reservation;
-
-  CreateReservationEvent({required this.reservation});
-}
-
 class CancelReservationEvent extends ReservationEvent {
   final int reservationId;
 

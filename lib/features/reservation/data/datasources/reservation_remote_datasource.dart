@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:tlb_app/features/reservation/data/models/reservation_model.dart';
 
 abstract class ReservationRemoteDatasource {
-  Future<void> createReservation(ReservationModel reservation);
+  // Future<void> createReservation(ReservationModel reservation);
   Future<void> cancelReservation(int reservationId);
   Future<List<ReservationModel>> fetchReservationHistory(String userId);
 }
@@ -11,17 +11,6 @@ class ReservationRemoteDatasourceImpl implements ReservationRemoteDatasource {
   final Dio client;
 
   ReservationRemoteDatasourceImpl({required this.client});
-
-  @override
-  Future<void> createReservation(ReservationModel reservation) async {
-    final response =
-        await client.post('/api/reservations', data: reservation.toJson());
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to create reservation. Please try again later.');
-    }
-  }
-
   @override
   Future<void> cancelReservation(int reservationId) async {
     final response = await client.post('/api/reservations/$reservationId');

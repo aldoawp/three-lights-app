@@ -46,3 +46,5 @@ class BookingError extends BookingState {
 
   BookingError({required this.message});
 }
+
+class BookingSuccess extends BookingState {}
