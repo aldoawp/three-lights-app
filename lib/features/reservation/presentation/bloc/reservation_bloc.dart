@@ -2,61 +2,57 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tlb_app/features/reservation/domain/usecases/cancel_reservation.dart';
 import 'package:tlb_app/features/reservation/domain/usecases/create_reservation.dart';
 import 'package:tlb_app/features/reservation/domain/usecases/get_reservation_history.dart';
-import 'package:tlb_app/features/reservation/presentation/bloc/reservation_event.dart';
-import 'package:tlb_app/features/reservation/presentation/bloc/reservation_state.dart';
+
+// Import Events and States
+import 'reservation_event.dart';
+import 'reservation_state.dart';
 
 class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
-  final CreateReservation createReservationEventsUseCase;
-  final CancelReservation cancelReservationEventsUseCase;
   final GetReservationHistory getReservationHistoryUseCase;
+  final CreateReservation createReservationUseCase;
+  final CancelReservation cancelReservationUseCase;
 
   ReservationBloc({
-    required this.createReservationEventsUseCase,
-    required this.cancelReservationEventsUseCase,
     required this.getReservationHistoryUseCase,
+    required this.createReservationUseCase,
+    required this.cancelReservationUseCase,
   }) : super(ReservationInitialState()) {
-    on<LoadReservationHistoryEvents>((event, emit) async {
-      emit(ReservationLoadingState());
-      try {
-        final allReservations =
-            await getReservationHistoryUseCase.execute(event.userId);
-        final ongoing =
-            allReservations.where((res) => res.status == 'ongoing').toList();
-        final completed =
-            allReservations.where((res) => res.status == 'completed').toList();
-        final cancelled =
-            allReservations.where((res) => res.status == 'canceled').toList();
+    on<LoadReservationHistoryEvents>(_onLoadReservationHistory);
+    on<CreateReservationEvent>(_onCreateReservation);
+    on<CancelReservationEvent>(_onCancelReservation);
+  }
 
-        final history = [
-          ...completed,
-          ...cancelled,
-        ];
-        emit(ReservationLoadedState(
-            ongoing: ongoing,
-            history: history,
-            completed: completed,
-            canceled: cancelled));
-      } catch (e) {
-        emit(ReservationFailureState(e.toString()));
-      }
-    });
-    // Create reservation
-    on<CreateReservationEvents>((event, emit) async {
-      emit(ReservationLoadingState());
-      try {
-        await createReservationEventsUseCase.execute(event.reservation);
-      } catch (e) {
-        emit(ReservationFailureState(e.toString()));
-      }
-    });
+  Future<void> _onLoadReservationHistory(LoadReservationHistoryEvents event,
+      Emitter<ReservationState> emit) async {
+    emit(ReservationLoadingState());
+    try {
+      final reservations =
+          await getReservationHistoryUseCase.execute(event.userId);
+      emit(ReservationLoadedState(reservations: reservations));
+    } catch (error) {
+      emit(ReservationFailureState(error.toString()));
+    }
+  }
 
-    on<CancelReservationEvents>((event, emit) async {
-      emit(ReservationLoadingState());
-      try {
-        await cancelReservationEventsUseCase.execute(event.reservationId);
-      } catch (e) {
-        emit(ReservationFailureState(e.toString()));
-      }
-    });
+  Future<void> _onCreateReservation(
+      CreateReservationEvent event, Emitter<ReservationState> emit) async {
+    emit(ReservationLoadingState());
+    try {
+      await createReservationUseCase.execute(event.reservation);
+      emit(ReservationCreated());
+    } catch (error) {
+      emit(ReservationFailureState(error.toString()));
+    }
+  }
+
+  Future<void> _onCancelReservation(
+      CancelReservationEvent event, Emitter<ReservationState> emit) async {
+    emit(ReservationLoadingState());
+    try {
+      await cancelReservationUseCase.execute(event.reservationId);
+      emit(ReservationCancelled());
+    } catch (error) {
+      emit(ReservationFailureState(error.toString()));
+    }
   }
 }

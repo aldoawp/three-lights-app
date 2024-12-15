@@ -18,116 +18,138 @@ class ReservationPage extends StatefulWidget {
 }
 
 class _ReservationPageState extends State<ReservationPage> {
+  late User currentUser;
+
   @override
   void initState() {
     super.initState();
-    final User currUser = context.read<AuthBloc>().state.user!;
+
+    // Ambil user aktif dan muat histori reservasi
+    currentUser = context.read<AuthBloc>().state.user!;
     context
         .read<ReservationBloc>()
-        .add(LoadReservationHistoryEvents(currUser.uid));
+        .add(LoadReservationHistoryEvents(currentUser.uid));
   }
 
   @override
   Widget build(BuildContext context) {
-    final User currUser = context.read<AuthBloc>().state.user!;
     return Scaffold(
+      // Gunakan AppBar khusus untuk Reservasi
       appBar: ReservationAppBar(
-        userName: "Guest",
-        userStatus: "Silahkan sign-in di sini",
-        userImageUrl: null,
+        userName: currentUser.name ?? "Guest",
+        userStatus: currentUser.email ?? "Silahkan sign-in di sini",
+        // userImageUrl: currentUser.imageUrl,
       ),
       body: BlocBuilder<ReservationBloc, ReservationState>(
         builder: (context, state) {
           if (state is ReservationLoadingState) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ReservationLoadedState) {
-            final ongoing = state.ongoing;
-            final history = state.history;
-
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 8.0),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.access_time, color: Colors.grey[600]),
-                        const SizedBox(width: 8),
-                        Text(
-                          "Reservasi",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Ongoing reservation
-                  if (ongoing.isEmpty)
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => BookAppointmentPage()),
-                        );
-                      },
-                      child: const Text('Create Reservation'),
-                    )
-                  else
-                    Column(
-                      children: ongoing.map((reservation) {
-                        return InvoiceWidget(
-                          invoiceNumber: 'INV-${reservation.reservationId}',
-                          date: reservation.dateData.toString(),
-                          barberName:
-                              '${reservation.barberFirstName} ${reservation.barberLastName}',
-                          serviceName: reservation.serviceName,
-                          appointmentDate: reservation.dateData.toString(),
-                          appointmentTime: reservation.hourData.toString(),
-                        );
-                      }).toList(),
-                    ),
-                  const SizedBox(height: 35.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(
-                      children: [
-                        Icon(Icons.history, color: Colors.grey[600]),
-                        const SizedBox(width: 8),
-                        Text(
-                          "Riwayat",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ReservationHistoryWidget(
-                    history: history.map((item) {
-                      return {
-                        'reservationId': item.reservationId,
-                        'barberName':
-                            '${item.barberFirstName} ${item.barberLastName}',
-                        'serviceName': item.serviceName,
-                        'appointmentDate': item.dateData,
-                        'appointmentTime': item.hourData,
-                        'status': item.status,
-                      };
-                    }).toList(),
-                  ),
-                ],
+            return _buildReservationContent(state);
+          } else if (state is ReservationFailureState) {
+            return Center(
+              child: Text(
+                'Terjadi kesalahan: ${state.message}',
+                style: const TextStyle(color: Colors.red),
               ),
             );
-          } else if (state is ReservationFailureState) {
-            return Center(child: Text('Error: ${state.message}'));
           }
-          return const Center(child: Text('No data available'));
+          return const Center(child: Text('Data tidak tersedia.'));
         },
+      ),
+    );
+  }
+
+  Widget _buildReservationContent(ReservationLoadedState state) {
+    final ongoingReservations = state.reservations
+        .where((reservation) => reservation.status == 'ongoing')
+        .toList();
+    final historyReservations = state.reservations
+        .where((reservation) => reservation.status != 'ongoing')
+        .toList();
+
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 8.0),
+
+          // Bagian Reservasi Ongoing
+          _buildSectionTitle(icon: Icons.access_time, title: "Reservasi"),
+          const SizedBox(height: 8.0),
+          ongoingReservations.isEmpty
+              ? Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const BookingPage(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 12.0),
+                    ),
+                    child: const Text(
+                      'Buat Reservasi',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                )
+              : Column(
+                  children: ongoingReservations.map((reservation) {
+                    return InvoiceWidget(
+                      invoiceNumber: 'INV-${reservation.reservationId}',
+                      date: reservation.date.date.toString(),
+                      barberName:
+                          '${reservation.barber.firstName} ${reservation.barber.lastName}',
+                      serviceName: reservation.service.name,
+                      appointmentDate: reservation.date.date.toString(),
+                      appointmentTime: reservation.hour.hour.toString(),
+                    );
+                  }).toList(),
+                ),
+          const SizedBox(height: 35.0),
+
+          // Bagian Riwayat Reservasi
+          _buildSectionTitle(icon: Icons.history, title: "Riwayat"),
+          const SizedBox(height: 8.0),
+          ReservationHistoryWidget(
+            history: historyReservations.map((item) {
+              return {
+                'reservationId': item.reservationId,
+                'barberName':
+                    '${item.barber.firstName} ${item.barber.lastName}',
+                'serviceName': item.service.name,
+                'appointmentDate': item.date.date.toString(),
+                'appointmentTime': item.hour.hour.toString(),
+                'status': item.status,
+              };
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Widget untuk Judul Section
+  Widget _buildSectionTitle({required IconData icon, required String title}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.blueGrey[600]),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }

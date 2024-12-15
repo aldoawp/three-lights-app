@@ -17,20 +17,20 @@ class LoadReservationHistoryEvents extends ReservationEvent {
   List<Object> get props => [userId];
 }
 
-class CreateReservationEvents extends ReservationEvent {
-  final Reservation reservation;
+class LoadReservationHistory extends ReservationEvent {
+  final String userId;
 
-  CreateReservationEvents(this.reservation);
-
-  @override
-  List<Object> get props => [reservation];
+  LoadReservationHistory({required this.userId});
 }
 
-class CancelReservationEvents extends ReservationEvent {
+class CreateReservationEvent extends ReservationEvent {
+  final Reservation reservation;
+
+  CreateReservationEvent({required this.reservation});
+}
+
+class CancelReservationEvent extends ReservationEvent {
   final int reservationId;
 
-  CancelReservationEvents(this.reservationId);
-
-  @override
-  List<Object> get props => [reservationId];
+  CancelReservationEvent({required this.reservationId});
 }

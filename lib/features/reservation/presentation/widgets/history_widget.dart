@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:tlb_app/features/reservation/data/models/avaible_date_model.dart';
+import 'package:tlb_app/features/reservation/domain/entities/avaible_date.dart';
 
 class ReservationHistoryWidget extends StatelessWidget {
   final List<Map<String, dynamic>> history;
@@ -18,7 +21,6 @@ class ReservationHistoryWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // const SizedBox(height: 16),
             history.isEmpty
                 ? const Center(
                     child: Text(
@@ -46,7 +48,7 @@ class ReservationHistoryWidget extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                item['status'], // Example: 'Completed'
+                                item['status'],
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: item['status'] == 'completed'
@@ -59,9 +61,7 @@ class ReservationHistoryWidget extends StatelessWidget {
                           const SizedBox(height: 8),
                           Text(
                             'Barber: ${item['barberName']}',
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
+                            style: const TextStyle(fontSize: 14),
                           ),
                           Text(
                             'Service: ${item['serviceName']}',
@@ -74,7 +74,9 @@ class ReservationHistoryWidget extends StatelessWidget {
                                   color: Colors.grey[600], size: 16),
                               const SizedBox(width: 8),
                               Text(
-                                item['appointmentDate'],
+                                item['appointmentDate'] is AvaibleDateModel
+                                    ? (item['appointmentDate'] as AvaibleDate)
+                                    : item['appointmentDate'],
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
@@ -85,7 +87,9 @@ class ReservationHistoryWidget extends StatelessWidget {
                                   color: Colors.grey[600], size: 16),
                               const SizedBox(width: 8),
                               Text(
-                                item['appointmentTime'],
+                                item['appointmentTime'] is AvaibleDate
+                                    ? (item['appointmentTime'] as AvaibleDate)
+                                    : item['appointmentTime'],
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,

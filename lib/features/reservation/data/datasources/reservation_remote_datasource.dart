@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:tlb_app/features/reservation/data/models/reservation_model.dart';
 
 abstract class ReservationRemoteDatasource {
   Future<void> createReservation(ReservationModel reservation);
   Future<void> cancelReservation(int reservationId);
-  Future<List<ReservationModel>> getReservationHistory(String userId);
+  Future<List<ReservationModel>> fetchReservationHistory(String userId);
 }
 
 class ReservationRemoteDatasourceImpl implements ReservationRemoteDatasource {
@@ -34,7 +32,7 @@ class ReservationRemoteDatasourceImpl implements ReservationRemoteDatasource {
   }
 
   @override
-  Future<List<ReservationModel>> getReservationHistory(String userId) async {
+  Future<List<ReservationModel>> fetchReservationHistory(String userId) async {
     final response = await client.get(
       '/reservation-data/$userId',
     );

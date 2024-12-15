@@ -2,11 +2,11 @@ import 'package:tlb_app/features/reservation/domain/entities/reservation.dart';
 import 'package:tlb_app/features/reservation/domain/repositories/reservation_repository.dart';
 
 class CreateReservation {
-  final ReservationRepository repository;
+  final ReservationRepository reservationRepository;
 
-  CreateReservation(this.repository);
+  CreateReservation(this.reservationRepository);
 
-  Future<void> execute(Reservation reservation) {
-    return repository.createReservation(reservation);
+  Future<void> execute(Reservation reservation) async {
+    await reservationRepository.createReservation(reservation);
   }
 }

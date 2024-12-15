@@ -11,6 +11,8 @@ import 'package:tlb_app/features/loyalty/presentation/bloc/loyalty_bloc.dart';
 import 'package:tlb_app/features/loyalty/presentation/pages/loyalty_page.dart';
 import 'package:tlb_app/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:tlb_app/features/profile/presentation/pages/profile_page.dart';
+import 'package:tlb_app/features/reservation/presentation/bloc/booking_bloc.dart';
+import 'package:tlb_app/features/reservation/presentation/bloc/booking_event.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.dart';
 import 'package:tlb_app/features/reservation/presentation/pages/book_appointment_page.dart';
 import 'package:tlb_app/features/reservation/presentation/pages/reservation_page.dart';
@@ -48,6 +50,13 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => sl<AuthBloc>()),
         BlocProvider<ReservationBloc>(
             create: (BuildContext context) => sl<ReservationBloc>()),
+        BlocProvider<BookingBloc>(
+          create: (BuildContext context) {
+            final bloc = sl<BookingBloc>();
+            bloc.add(FetchBookingData());
+            return bloc;
+          },
+        ),
         BlocProvider(create: (BuildContext context) => CatalogueBloc()),
         BlocProvider(create: (BuildContext context) => LoyaltyBloc()),
         BlocProvider(create: (BuildContext context) => ProfileBloc()),
