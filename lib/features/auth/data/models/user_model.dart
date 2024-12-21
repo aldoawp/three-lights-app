@@ -1,6 +1,6 @@
-import 'package:tlb_app/features/auth/domain/entities/user.dart';
+import 'package:tlb_app/core/common/entities/user.dart';
 
-class UserModel extends User {
+class UserModel extends UserEntity {
   const UserModel(
       {required super.uid,
       required super.name,

@@ -88,12 +88,12 @@ class LoginPage extends StatelessWidget {
                                     iconPosition: IconPosition.trailing,
                                     type: ButtonType.outlined,
                                     onPressedAction: () {
-                                      // context
-                                      //     .read<AuthBloc>()
-                                      //     .add(UserSignInAnonymousEvent());
                                       context
                                           .read<AuthBloc>()
-                                          .add(AuthIsUserLoggedIn());
+                                          .add(UserSignInAnonymousEvent());
+                                      // context
+                                      //     .read<AuthBloc>()
+                                      //     .add(AuthIsUserLoggedIn());
                                     },
                                   ),
                                 ),

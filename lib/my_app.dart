@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tlb_app/constants/navigations/navigation_router.dart';
+import 'package:tlb_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:tlb_app/features/auth/presentation/pages/login_page.dart';
 import 'package:tlb_app/features/auth/presentation/pages/onboarding_1_page.dart';
 import 'package:tlb_app/features/catalogue/presentation/bloc/catalogue_bloc.dart';
-import 'package:tlb_app/features/catalogue/presentation/pages/catalogue_page.dart';
 import 'package:tlb_app/features/loyalty/presentation/bloc/loyalty_bloc.dart';
 import 'package:tlb_app/features/loyalty/presentation/pages/loyalty_page.dart';
 import 'package:tlb_app/features/profile/presentation/bloc/profile_bloc.dart';
@@ -41,31 +41,20 @@ class MyApp extends StatelessWidget {
     //   homeWidget = OnboardingOnePage();
     // }
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthBloc>(
-            create: (BuildContext context) => sl<AuthBloc>()),
-        BlocProvider(create: (BuildContext context) => ReservationBloc()),
-        BlocProvider(create: (BuildContext context) => CatalogueBloc()),
-        BlocProvider(create: (BuildContext context) => LoyaltyBloc()),
-        BlocProvider(create: (BuildContext context) => ProfileBloc()),
-      ],
-      // This is the central routing system
-      child: MaterialApp.router(
-        // routes: {
-        //   Routes.onboardingTwoPage.name: (context) => const OnboardingTwoPage(),
-        //   Routes.onboardingThreePage.name: (context) =>
-        //       const OnboardingThreePage(),
-        //   Routes.loginPage.name: (context) => const LoginPage(),
-        //   Routes.reservationPage.name: (context) => const ReservationPage(),
-        //   Routes.cataloguePage.name: (context) => const CataloguePage(),
-        //   Routes.loyaltyPage.name: (context) => const LoyaltyPage(),
-        //   Routes.profilePage.name: (context) => const ProfilePage(),
-        // },
-        // home: homeWidget,
-        routerConfig: router,
-        debugShowCheckedModeBanner: false,
-      ),
+    return MaterialApp.router(
+      routerConfig: router,
+      debugShowCheckedModeBanner: false,
+      // routes: {
+      //   Routes.onboardingTwoPage.name: (context) => const OnboardingTwoPage(),
+      //   Routes.onboardingThreePage.name: (context) =>
+      //       const OnboardingThreePage(),
+      //   Routes.loginPage.name: (context) => const LoginPage(),
+      //   Routes.reservationPage.name: (context) => const ReservationPage(),
+      //   Routes.cataloguePage.name: (context) => const CataloguePage(),
+      //   Routes.loyaltyPage.name: (context) => const LoyaltyPage(),
+      //   Routes.profilePage.name: (context) => const ProfilePage(),
+      // },
+      // home: homeWidget,
     );
   }
 }
