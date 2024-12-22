@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tlb_app/features/reservation/data/models/booking_model.dart';
+import 'package:tlb_app/features/reservation/domain/repositories/booking_repository.dart';
+import 'package:tlb_app/injection_container.dart';
 
 abstract class BookingRemoteDatasource {
   Future<BookingModel> fetchBookingData();
@@ -26,6 +31,8 @@ class BookingRemoteDatasourceImpl implements BookingRemoteDatasource {
   Future<void> createReservation(Map<String, dynamic> data) async {
     final response = await client.post('/reservation', data: data);
     if (response.statusCode == 201) {
+      final decoded = response.data; // No need to use jsonDecode
+      sl<BookingRepository>().savePaymentToken(decoded['data']['paymentToken']);
       return;
     } else {
       throw Exception('Failed to create reservation : ${response.statusCode}');

@@ -4,6 +4,7 @@ import 'package:tlb_app/features/reservation/domain/repositories/booking_reposit
 
 class BookingRepositoryImpl implements BookingRepository {
   final BookingRemoteDatasource remoteDataSource;
+  String? paymentToken;
 
   BookingRepositoryImpl({required this.remoteDataSource});
 
@@ -23,7 +24,14 @@ class BookingRepositoryImpl implements BookingRepository {
       await remoteDataSource.createReservation(reservationData);
     } catch (error) {
       throw Exception('Error Creating Reservation $error');
-      print(reservationData);
     }
+  }
+
+  @override
+  String? get getPaymentToken => paymentToken;
+
+  @override
+  void savePaymentToken(String token) {
+    paymentToken = token;
   }
 }

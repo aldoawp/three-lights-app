@@ -15,19 +15,18 @@ class BookingModel extends Booking {
 
   factory BookingModel.fromJson(Map<String, dynamic> json) {
     return BookingModel(
-      services: (json['services'] as List)
-          .map((serviceJson) => ServiceModel.fromJson(serviceJson))
-          .toList(),
-      barbers: (json['barbers'] as List)
-          .map((barberJson) => BarberModel.fromJson(barberJson))
-          .toList(),
-      avaibleDates: (json['availableDates'] as List)
-          .map((dateJson) => AvaibleDateModel.fromJson(dateJson))
-          .toList(),
-      avaibleHours: (json['availableHours'] as List)
-          .map((hourJson) => AvaibleHourModel.fromJson(hourJson))
-          .toList(),
-    );
+        services: (json['services'] as List)
+            .map((serviceJson) => ServiceModel.fromJson(serviceJson))
+            .toList(),
+        barbers: (json['barbers'] as List)
+            .map((barberJson) => BarberModel.fromJson(barberJson))
+            .toList(),
+        avaibleDates: (json['availableDates'] as List)
+            .map((dateJson) => AvaibleDateModel.fromJson(dateJson))
+            .toList(),
+        avaibleHours: (json['availableHours'] as List)
+            .map((hourJson) => AvaibleHourModel.fromJson(hourJson))
+            .toList());
   }
 
   Map<String, dynamic> toJson() {
