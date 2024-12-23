@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tlb_app/features/auth/domain/entities/user.dart';
 import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:tlb_app/features/reservation/domain/repositories/booking_repository.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/reservation_event.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/reservation_state.dart';
@@ -9,6 +10,7 @@ import 'package:tlb_app/features/reservation/presentation/pages/book_appointment
 import 'package:tlb_app/features/reservation/presentation/widgets/reservation_app_bar.dart';
 import 'package:tlb_app/features/reservation/presentation/widgets/history_widget.dart';
 import 'package:tlb_app/features/reservation/presentation/widgets/invoice_widget.dart';
+import 'package:tlb_app/injection_container.dart';
 
 class ReservationPage extends StatefulWidget {
   const ReservationPage({super.key});
@@ -73,6 +75,8 @@ class _ReservationPageState extends State<ReservationPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8.0),
+          Text(sl<BookingRepository>().getPaymentToken ?? 'KONYOL',
+              style: const TextStyle(color: Colors.red)),
 
           // Bagian Reservasi Ongoing
           _buildSectionTitle(icon: Icons.access_time, title: "Reservasi"),

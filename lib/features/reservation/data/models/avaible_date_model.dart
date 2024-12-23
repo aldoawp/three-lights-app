@@ -4,11 +4,13 @@ class AvaibleDateModel extends AvaibleDate {
   const AvaibleDateModel({
     required super.dateId,
     required super.date,
+    super.status,
   });
   factory AvaibleDateModel.fromJson(Map<String, dynamic> json) {
     return AvaibleDateModel(
       dateId: json['date_id'] ?? 0,
       date: json['date'] ?? '',
+      status: json['status'] ?? '',
     );
   }
 
@@ -16,6 +18,7 @@ class AvaibleDateModel extends AvaibleDate {
     return {
       'date_id': dateId,
       'date': date,
+      'status': status,
     };
   }
 
@@ -23,6 +26,7 @@ class AvaibleDateModel extends AvaibleDate {
     return const AvaibleDateModel(
       dateId: 0,
       date: '',
+      status: '',
     );
   }
 }

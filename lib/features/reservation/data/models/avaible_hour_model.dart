@@ -4,12 +4,14 @@ class AvaibleHourModel extends AvaibleHour {
   const AvaibleHourModel({
     required super.hourId,
     required super.hour,
+    super.status,
   });
 
   factory AvaibleHourModel.fromJson(Map<String, dynamic> json) {
     return AvaibleHourModel(
       hourId: json['hour_id'] ?? 0,
       hour: json['hour'] ?? '',
+      status: json['status'] ?? '',
     );
   }
 
@@ -17,6 +19,7 @@ class AvaibleHourModel extends AvaibleHour {
     return {
       'hour_id': hourId,
       'hour': hour,
+      'status': status,
     };
   }
 
@@ -24,6 +27,7 @@ class AvaibleHourModel extends AvaibleHour {
     return const AvaibleHourModel(
       hourId: 0,
       hour: '',
+      status: '',
     );
   }
 }
