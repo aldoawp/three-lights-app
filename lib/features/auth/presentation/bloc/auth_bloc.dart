@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:tlb_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:tlb_app/core/usecases/usecase.dart';
-import 'package:tlb_app/features/auth/domain/entities/user.dart' as entity;
+import 'package:tlb_app/core/common/entities/user.dart';
 import 'package:tlb_app/features/auth/domain/usecases/current_user.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_anonymous.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_google.dart';
@@ -10,6 +11,7 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final AppUserCubit appUserCubit;
   final UserSignInAnonymous userSignInAnonymously;
   final UserSignInGoogle userSignInGoogle;
   final CurrentUser currentUser;
@@ -17,7 +19,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(
       {required this.userSignInAnonymously,
       required this.userSignInGoogle,
-      required this.currentUser})
+      required this.currentUser,
+      required this.appUserCubit})
       : super(AuthInitial()) {
     // _setUpAuthListener();
     // on<SignedInEvent>(_signedIn);
@@ -35,8 +38,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return emit(AuthError(error: failure.message));
       },
       (user) {
-        print(user);
-        return emit(Authenticated(user: user));
+        print('...$user...');
+        return _emitAuthSuccess(user, emit);
       },
     );
   }
@@ -51,7 +54,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return emit(AuthError(error: failure.message));
       },
       (user) {
-        return emit(Authenticated(user: user));
+        // return emit(Authenticated(user: user));
+        return _emitAuthSuccess(user, emit);
       },
     );
   }
@@ -63,8 +67,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     res.fold(
       (l) => emit(AuthError(error: l.message)),
-      (r) => emit(Authenticated(user: r)),
+      (r) => _emitAuthSuccess(r, emit),
     );
+  }
+
+  void _emitAuthSuccess(
+    UserEntity user,
+    Emitter<AuthState> emit,
+  ) {
+    appUserCubit.updateUser(user);
+    emit(Authenticated(user: user));
   }
 
   // void _setUpAuthListener() {

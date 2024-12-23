@@ -102,10 +102,14 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<UserModel?> getCurrentUserData() async {
     try {
       if (currentUserSession != null) {
-        final userData = currentUserSession;
+        final userData = await supabaseClient
+            .from('auth_users_view')
+            .select('*')
+            .eq('id', currentUserSession!.user.id)
+            .maybeSingle();
         print('this session: $userData');
 
-        final userModel = UserModel.fromJson(userData!.user.toJson());
+        final userModel = UserModel.fromJson(currentUserSession!.user.toJson());
 
         return userModel;
       }
