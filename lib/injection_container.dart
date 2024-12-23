@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -16,12 +17,25 @@ import 'package:tlb_app/features/catalogue/domain/repositories/catalogue_reposit
 import 'package:tlb_app/features/catalogue/domain/usecases/get_catalogue.dart';
 import 'package:tlb_app/features/catalogue/domain/usecases/toggle_bookmark.dart';
 import 'package:tlb_app/features/catalogue/presentation/bloc/catalogue_bloc.dart';
+import 'package:tlb_app/features/reservation/data/datasources/booking_remote_datasource.dart';
+import 'package:tlb_app/features/reservation/data/datasources/reservation_remote_datasource.dart';
+import 'package:tlb_app/features/reservation/data/repositories/booking_repository_impl.dart';
+import 'package:tlb_app/features/reservation/data/repositories/reservation_repository_impl.dart';
+import 'package:tlb_app/features/reservation/domain/repositories/booking_repository.dart';
+import 'package:tlb_app/features/reservation/domain/repositories/reservation_repository.dart';
+import 'package:tlb_app/features/reservation/domain/usecases/cancel_reservation.dart';
+import 'package:tlb_app/features/reservation/domain/usecases/get_booking_data.dart';
+import 'package:tlb_app/features/reservation/domain/usecases/get_reservation_history.dart';
+import 'package:tlb_app/features/reservation/presentation/bloc/booking_bloc.dart';
+import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   //! Features - Auth
   initAuth();
+  initReservation();
+  initBooking();
 
   //! Features - Catalogues
   initCatalogue();
@@ -78,6 +92,7 @@ void initAuth() {
   );
 }
 
+
 void initCatalogue() {
   // Bloc
   sl.registerFactory(
@@ -102,4 +117,55 @@ void initCatalogue() {
   sl.registerLazySingleton<CatalogueDataSources>(
     () => CatalogueDataSourceImpl(sl()),
   );
+
+void initReservation() {
+  // External dependencies
+  sl.registerLazySingleton(
+      () => Dio(BaseOptions(baseUrl: "http://192.168.137.1:3000/api")));
+
+  // Data Layer
+  sl.registerLazySingleton<ReservationRemoteDatasource>(
+    () => ReservationRemoteDatasourceImpl(client: sl<Dio>()),
+  );
+  sl.registerLazySingleton<ReservationRepository>(
+    () => ReservationRepositoryImpl(
+        remoteDataSource: sl<ReservationRemoteDatasource>()),
+  );
+
+  // Domain Layer
+  // sl.registerLazySingleton(
+  //     () => CreateReservation(sl<ReservationRepository>()));
+  sl.registerLazySingleton(
+      () => CancelReservation(sl<ReservationRepository>()));
+  sl.registerLazySingleton(() => GetReservationHistory(
+      reservationRepository: sl<ReservationRepository>()));
+
+  // Presentation Layer
+  sl.registerFactory(() => ReservationBloc(
+        // createReservationUseCase: sl<CreateReservation>(),
+        cancelReservationUseCase: sl<CancelReservation>(),
+        getReservationHistoryUseCase: sl<GetReservationHistory>(),
+      ));
+}
+
+void initBooking() {
+  // Data Layer
+  sl.registerLazySingleton<BookingRemoteDatasource>(
+    () => BookingRemoteDatasourceImpl(client: sl<Dio>()),
+  );
+  sl.registerLazySingleton<BookingRepository>(
+    () =>
+        BookingRepositoryImpl(remoteDataSource: sl<BookingRemoteDatasource>()),
+  );
+
+  // Domain Layer
+  sl.registerLazySingleton(
+      () => FetchBookingDataUseCase(sl<BookingRepository>()));
+
+  // Presentation layer
+  // BOOKING
+  sl.registerFactory(() => BookingBloc(
+        fetchBookingDataUseCase: sl<FetchBookingDataUseCase>(),
+        repository: sl<BookingRepository>(),
+      ));
 }
