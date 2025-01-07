@@ -74,19 +74,20 @@ class _PaymentPageState extends State<PaymentPage> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) {
-            if (url.contains("finish")) {
+            debugPrint("URL started loading: $url");
+            if (url.contains("finish") || url.contains("status_code=200")) {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ReservationPage(),
                 ),
               );
+            } else if (url.contains("example.com")) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Text("Payment completed successfully.")),
+              );
             }
-          },
-          onWebResourceError: (WebResourceError error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Error: ${error.description}")),
-            );
           },
         ),
       )
