@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tlb_app/features/reservation/domain/repositories/booking_repository.dart';
 import 'package:tlb_app/features/reservation/presentation/pages/reservation_page.dart';
 import 'package:tlb_app/injection_container.dart';
+import 'package:tlb_app/my_app.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -61,7 +62,7 @@ class _PaymentPageState extends State<PaymentPage> {
       return Scaffold(
         appBar: AppBar(
           title: const Text('Pembayaran'),
-          backgroundColor: Colors.green,
+          backgroundColor: ColorResource.primary,
         ),
         body: const Center(
           child: Text('Failed to load payment page.'),
