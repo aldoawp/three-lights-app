@@ -1,33 +1,46 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tlb_app/features/reservation/domain/usecases/cancel_reservation.dart';
+import 'package:tlb_app/features/reservation/domain/usecases/get_reservation_history.dart';
 
-part 'reservation_event.dart';
-part 'reservation_state.dart';
+// Import Events and States
+import 'reservation_event.dart';
+import 'reservation_state.dart';
 
 class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
-  ReservationBloc()
-      : super(ReservationInitial(
-          userImageURL: "Placeholder image",
-          userName: "Guest",
-        )) {
-    on<LoadUserDataEvents>(_loadUserData);
-    on<LoadReservationHistoryEvent>(
-      (event, emit) {},
-    );
-    on<CheckCurrentReservationEvent>(
-      (event, emit) {},
-    );
+  final GetReservationHistory getReservationHistoryUseCase;
+  // final CreateReservation createReservationUseCase;
+  final CancelReservation cancelReservationUseCase;
 
-    add(LoadUserDataEvents());
+  ReservationBloc({
+    required this.getReservationHistoryUseCase,
+    // required this.createReservationUseCase,
+    required this.cancelReservationUseCase,
+  }) : super(ReservationInitialState()) {
+    on<LoadReservationHistoryEvents>(_onLoadReservationHistory);
+    // on<CreateReservationEvent>(_onCreateReservation);
+    on<CancelReservationEvent>(_onCancelReservation);
   }
 
-  void _loadUserData(LoadUserDataEvents event, Emitter<ReservationState> emit) {
-    final user = Supabase.instance.client.auth.currentUser;
-    final userName = user?.userMetadata?['name'];
-    final userImageURL = user?.userMetadata?['picture'];
-    if (userName != null && userImageURL != null) {
-      emit(ReservationInitial(userName: userName, userImageURL: userImageURL));
+  Future<void> _onLoadReservationHistory(LoadReservationHistoryEvents event,
+      Emitter<ReservationState> emit) async {
+    emit(ReservationLoadingState());
+    try {
+      final reservations =
+          await getReservationHistoryUseCase.execute(event.userId);
+      emit(ReservationLoadedState(reservations: reservations));
+    } catch (error) {
+      emit(ReservationFailureState(error.toString()));
+    }
+  }
+
+  Future<void> _onCancelReservation(
+      CancelReservationEvent event, Emitter<ReservationState> emit) async {
+    emit(ReservationLoadingState());
+    try {
+      await cancelReservationUseCase.execute(event.reservationId);
+      emit(ReservationCancelled());
+    } catch (error) {
+      emit(ReservationFailureState(error.toString()));
     }
   }
 }
