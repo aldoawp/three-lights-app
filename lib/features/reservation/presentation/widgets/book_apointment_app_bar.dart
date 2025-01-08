@@ -12,8 +12,15 @@ class BookingAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('Book an appointment'),
-      centerTitle: true,
+      title: const Text(
+        'Book an appointment',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+        ),
+      ),
+      // centerTitle: true,
       backgroundColor: ColorResource.primary,
       foregroundColor: Colors.white,
       leading: IconButton(

@@ -11,6 +11,7 @@ import 'package:tlb_app/features/reservation/presentation/widgets/reservation_ap
 import 'package:tlb_app/features/reservation/presentation/widgets/history_widget.dart';
 import 'package:tlb_app/features/reservation/presentation/widgets/invoice_widget.dart';
 import 'package:tlb_app/injection_container.dart';
+import 'package:tlb_app/my_app.dart';
 
 class ReservationPage extends StatefulWidget {
   const ReservationPage({super.key});
@@ -74,38 +75,82 @@ class _ReservationPageState extends State<ReservationPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 8.0),
-          Text(sl<BookingRepository>().getPaymentToken ?? 'KONYOL',
-              style: const TextStyle(color: Colors.red)),
-
-          // Bagian Reservasi Ongoing
-          _buildSectionTitle(icon: Icons.access_time, title: "Reservasi"),
-          const SizedBox(height: 8.0),
+          const SizedBox(height: 28.0),
+          _buildSectionTitle(
+            icon: Icons.access_time,
+            title: "Reservasi",
+          ),
+          const SizedBox(height: 4.0),
           ongoingReservations.isEmpty
-              ? Center(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const BookingPage(),
-                        ),
-                      );
-                      if (result == true) {
-                        context
-                            .read<ReservationBloc>()
-                            .add(LoadReservationHistoryEvents(currentUser.uid));
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 12.0),
+              ? Column(
+                  children: [
+                    const SizedBox(height: 24.0),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.all(28.0), // Adjusted padding
+                      constraints: const BoxConstraints(
+                          minHeight: 150), // Set minimal height
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.0),
+                        border: Border.all(color: Colors.grey.shade300),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 2,
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Saat ini anda tidak memiliki reservasi',
+                            style: TextStyle(
+                              fontSize: 16, // Reduced font size
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 24.0), // Adjusted spacing
+                          ElevatedButton.icon(
+                            onPressed: () async {
+                              final result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const BookingPage(),
+                                ),
+                              );
+                              if (result == true) {
+                                context.read<ReservationBloc>().add(
+                                    LoadReservationHistoryEvents(
+                                        currentUser.uid));
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 26.0,
+                                  vertical: 12.0), // Adjusted button padding
+                              backgroundColor: ColorResource.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            label: const Text(
+                              'Reservasi',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
+                            ),
+                            icon: const Icon(Icons.add, color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
-                    child: const Text(
-                      'Buat Reservasi',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
+                  ],
                 )
               : Column(
                   children: ongoingReservations.map((reservation) {
@@ -120,11 +165,12 @@ class _ReservationPageState extends State<ReservationPage> {
                     );
                   }).toList(),
                 ),
+
           const SizedBox(height: 35.0),
 
           // Bagian Riwayat Reservasi
           _buildSectionTitle(icon: Icons.history, title: "Riwayat"),
-          const SizedBox(height: 8.0),
+          // const SizedBox(height: 4.0),
           ReservationHistoryWidget(
             history: historyReservations.map((item) {
               return {

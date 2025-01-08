@@ -10,6 +10,7 @@ import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.
 import 'package:tlb_app/features/reservation/presentation/pages/payment_page.dart';
 import 'package:tlb_app/features/reservation/presentation/widgets/book_apointment_app_bar.dart';
 import 'package:tlb_app/injection_container.dart';
+import 'package:tlb_app/my_app.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({super.key});
@@ -41,7 +42,6 @@ class _BookingPageState extends State<BookingPage> {
           if (state is BookingSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                // content: Text("Reservation created successfully!")),
                 content: Text(
                   sl<BookingRepository>().getPaymentToken ?? 'KONYOL',
                 ),
@@ -85,34 +85,47 @@ class BookingForm extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
       children: [
+        const SizedBox(height: 14),
         _buildDropdown(
           context: context,
-          title: "Pilih barber",
           hint: "Pilih barber",
           value: state.selectedBarber,
           items: state.booking.barbers.map((barber) {
             return DropdownMenuItem(
               value: barber,
-              child: Text(barber.firstName),
+              child: Container(
+                width: double.infinity,
+                child: Text(barber.firstName),
+              ),
             );
           }).toList(),
           onChanged: (barber) {
             context.read<BookingBloc>().add(SelectBarber(barber: barber!));
           },
         ),
+        const SizedBox(height: 30),
+        Text(
+          "Pilih tanggal",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         _buildDropdown(
           context: context,
-          title: "Pilih tanggal",
           hint: "Pilih tanggal",
           value: state.selectedDate,
           items: state.booking.avaibleDates.map((date) {
             return DropdownMenuItem(
               value: date,
               enabled: date.status != 'booked',
-              child: Text(
-                date.date,
-                style: TextStyle(
-                  color: date.status == 'booked' ? Colors.grey : Colors.black,
+              child: Container(
+                width: double.infinity,
+                child: Text(
+                  date.date,
+                  style: TextStyle(
+                    color: date.status == 'booked' ? Colors.grey : Colors.black,
+                  ),
                 ),
               ),
             );
@@ -123,42 +136,64 @@ class BookingForm extends StatelessWidget {
             }
           },
         ),
-        const SizedBox(height: 10),
-        _buildSectionTitle("Pilih waktu"),
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          children: state.booking.avaibleHours.map((hour) {
-            final isAvailable = hour.status != 'booked';
-            return ChoiceChip(
-              label: Text(
-                hour.hour,
-                style: TextStyle(
-                  color: isAvailable ? Colors.black : Colors.grey,
-                ),
+        const SizedBox(height: 30),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Pilih waktu",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
-              selected: state.selectedTime == hour,
-              onSelected: isAvailable
-                  ? (_) {
-                      context.read<BookingBloc>().add(SelectTime(time: hour));
-                    }
-                  : null,
-              selectedColor: Colors.green.shade300,
-              backgroundColor:
-                  isAvailable ? Colors.white : Colors.grey.shade300,
-            );
-          }).toList(),
+            ),
+            Wrap(
+              spacing: 4.0,
+              runSpacing: 4.0,
+              children: state.booking.avaibleHours.map((hour) {
+                final isSelected = hour == state.selectedTime;
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width / 4 - 12,
+                  child: ChoiceChip(
+                    label: Text(
+                      hour.hour,
+                      style: TextStyle(fontSize: 11),
+                    ),
+                    selected: isSelected,
+                    onSelected: (selected) {
+                      if (hour.status != 'booked') {
+                        context.read<BookingBloc>().add(SelectTime(time: hour));
+                      }
+                    },
+                    labelStyle: TextStyle(
+                      color: hour.status == 'booked'
+                          ? Colors.grey
+                          : isSelected
+                              ? Colors.white
+                              : Colors.black,
+                    ),
+                    selectedColor: ColorResource.primary,
+                    backgroundColor: Colors.white,
+                    disabledColor: Colors.grey[500],
+                    showCheckmark: false,
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         _buildDropdown(
           context: context,
-          title: "Pilih servis",
           hint: "Pilih servis",
           value: state.selectedService,
           items: state.booking.services.map((service) {
             return DropdownMenuItem(
               value: service,
-              child: Text(service.name),
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(service.name),
+              ),
             );
           }).toList(),
           onChanged: (service) {
@@ -193,13 +228,11 @@ class BookingForm extends StatelessWidget {
                   ),
                 );
 
-            // Tunggu respons dari Midtrans setelah reservasi berhasil
             final bookingState = context.read<BookingBloc>().state;
             if (bookingState is BookingSuccess) {
               final paymentToken = sl<BookingRepository>().getPaymentToken;
 
               if (paymentToken != null) {
-                // Navigasi ke halaman pembayaran
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -215,7 +248,7 @@ class BookingForm extends StatelessWidget {
             }
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
+            backgroundColor: ColorResource.primary,
             minimumSize: const Size.fromHeight(50),
             shadowColor: Colors.black.withOpacity(0.5),
             elevation: 4,
@@ -228,46 +261,35 @@ class BookingForm extends StatelessWidget {
 
   Widget _buildDropdown<T>({
     required BuildContext context,
-    required String title,
     required String hint,
     required T? value,
     required List<DropdownMenuItem<T>> items,
     required ValueChanged<T?> onChanged,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionTitle(title),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 6,
-                offset: const Offset(0, 4),
-              ),
-            ],
+    return Container(
+      width: 200,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 6,
+            offset: const Offset(0, 4),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: DropdownButton<T>(
-            isExpanded: true,
-            underline: const SizedBox(),
-            hint: Text(hint),
-            value: value,
-            items: items,
-            onChanged: onChanged,
-            dropdownColor: Colors.white,
-          ),
-        ),
-        const SizedBox(height: 10),
-      ],
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: DropdownButton<T>(
+        isExpanded: true,
+        underline: const SizedBox(),
+        hint: Text(hint),
+        value: value,
+        items: items,
+        onChanged: onChanged,
+        dropdownColor: Colors.white,
+      ),
     );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Text(title, style: const TextStyle(fontWeight: FontWeight.bold));
   }
 
   Widget _buildSummary(BookingLoaded state) {
@@ -277,14 +299,23 @@ class BookingForm extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                const Icon(Icons.summarize_outlined, size: 24),
+                const SizedBox(width: 8),
+                const Text(
+                  "Summary",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+            const Divider(),
             _buildSummaryRow(
                 'Biaya Servis', 'Rp ${state.selectedService?.price ?? 0}'),
-            _buildSummaryRow('Biaya Admin', 'Rp 2.000'),
-            _buildSummaryRow('PPN 11%', 'Rp 0'),
-            const Divider(),
             _buildSummaryRow('Total',
-                'Rp ${state.selectedService?.price != null ? state.selectedService!.price + 2000 : 0}',
+                'Rp ${state.selectedService?.price != null ? state.selectedService!.price : 0}',
                 isBold: true),
           ],
         ),
