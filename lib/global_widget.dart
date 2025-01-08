@@ -39,6 +39,10 @@ class _NavBarState extends State<NavBar> {
           icon: Icon(Icons.person_outline),
           label: StringResource.profile,
         ),
+        NavigationDestination(
+          icon: Icon(Icons.developer_mode_rounded),
+          label: StringResource.about,
+        ),
       ],
       onDestinationSelected: (int index) {
         widget.currentIndex = index;
@@ -56,6 +60,9 @@ class _NavBarState extends State<NavBar> {
           case 3:
             Navigator.pushReplacementNamed(context, Routes.profilePage.name);
             break;
+          case 4:
+          Navigator.pushReplacementNamed(context, Routes.aboutPage.name);
+          break;
         }
       },
     );

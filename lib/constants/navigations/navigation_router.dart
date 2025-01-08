@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tlb_app/app_wrapper.dart';
+import 'package:tlb_app/features/about/presentation/pages/about_page.dart';
 import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:tlb_app/features/auth/presentation/pages/login_page.dart';
 import 'package:tlb_app/features/auth/presentation/pages/onboarding_1_page.dart';
@@ -19,6 +20,7 @@ final _shellNavigatorReservation = GlobalKey<NavigatorState>();
 final _shellNavigatorCatalogue = GlobalKey<NavigatorState>();
 final _shellNavigatorLoyalty = GlobalKey<NavigatorState>();
 final _shellNavigatorProfile = GlobalKey<NavigatorState>();
+final _shellNavigatorAbout = GlobalKey<NavigatorState>();
 
 final GoRouter router = GoRouter(
     debugLogDiagnostics: true,
@@ -111,6 +113,13 @@ final GoRouter router = GoRouter(
               //     //! need to build /profile/editProfile
               //   ),
               // ],
+            ),
+          ]),
+          StatefulShellBranch(navigatorKey: _shellNavigatorAbout, routes: [
+            GoRoute(
+              path: '/about',
+              name: Routes.aboutPage.name,
+              builder: (context, state) => AboutPage(),
             ),
           ])
         ],

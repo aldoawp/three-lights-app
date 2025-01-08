@@ -31,6 +31,7 @@ class StringResource {
   static const String catalogue = "Katalog";
   static const String loyalty = "Langganan";
   static const String profile = "Profil";
+  static const String about = "About";
 
   // AskAI Page
   static const String introAskAI =
