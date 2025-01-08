@@ -7,7 +7,7 @@ import 'package:tlb_app/core/utils/scroll_position.dart';
 import 'package:tlb_app/features/catalogue/domain/entities/catalogue_entity.dart';
 import 'package:tlb_app/features/catalogue/presentation/bloc/catalogue_bloc.dart';
 import 'package:tlb_app/features/catalogue/presentation/widgets/catalogue_card.dart';
-import 'package:tlb_app/features/catalogue/presentation/widgets/custom_card_widget.dart';
+import 'package:tlb_app/core/common/widgets/custom_card_widget.dart';
 import 'package:tlb_app/features/catalogue/presentation/widgets/search_bar_widget.dart';
 import 'package:tlb_app/features/catalogue/presentation/widgets/style/catalogue_text_style.dart';
 import 'package:tlb_app/injection_container.dart';

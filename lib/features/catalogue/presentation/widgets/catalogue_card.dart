@@ -5,7 +5,7 @@ import 'package:tlb_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:tlb_app/core/utils/scroll_position.dart';
 import 'package:tlb_app/features/catalogue/domain/entities/catalogue_entity.dart';
 import 'package:tlb_app/features/catalogue/presentation/bloc/catalogue_bloc.dart';
-import 'package:tlb_app/features/catalogue/presentation/widgets/custom_card_widget.dart';
+import 'package:tlb_app/core/common/widgets/custom_card_widget.dart';
 import 'package:tlb_app/features/catalogue/presentation/widgets/style/catalogue_text_style.dart';
 import 'package:tlb_app/injection_container.dart';
 import 'package:tlb_app/core/utils/scroll_position.dart';
