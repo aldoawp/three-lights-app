@@ -4,6 +4,7 @@ import 'package:tlb_app/features/loyalty/presentation/widgets/stamp.dart';
 
 class StampRow extends StatelessWidget {
   final int stampsCollected;
+
   const StampRow({super.key, required this.stampsCollected});
 
   @override
@@ -14,13 +15,10 @@ class StampRow extends StatelessWidget {
         const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ...List.generate(4, (index) {
-              // Use spread operator here
-              return Stamp(filled: index < stampsCollected);
-            }),
-            const RewardStamp(), // No need for const [] anymore
-          ],
+          children: List.generate(5, (index) {
+            // Generate 5 stamps (4 + reward)
+            return Stamp(filled: index < stampsCollected);
+          }),
         ),
       ],
     );

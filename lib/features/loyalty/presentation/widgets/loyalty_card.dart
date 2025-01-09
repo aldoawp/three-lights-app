@@ -1,40 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tlb_app/features/loyalty/presentation/bloc/loyalty_bloc.dart';
 import 'package:tlb_app/features/loyalty/presentation/widgets/barbershop_header.dart';
+import 'package:tlb_app/features/loyalty/presentation/widgets/congratulation_drawer.dart';
+import 'package:tlb_app/features/loyalty/presentation/widgets/history_item_data.dart';
 import 'package:tlb_app/features/loyalty/presentation/widgets/loyalty_card_title.dart';
 import 'package:tlb_app/features/loyalty/presentation/widgets/qr_scan_button.dart';
 import 'package:tlb_app/features/loyalty/presentation/widgets/stamp_row.dart';
 
-class LoyaltyCard extends StatefulWidget { // Make LoyaltyCard stateful
+class LoyaltyCard extends StatelessWidget {
   const LoyaltyCard({super.key});
 
   @override
-  State<LoyaltyCard> createState() => _LoyaltyCardState();
-}
-
-class _LoyaltyCardState extends State<LoyaltyCard> {
-  int stampsCollected = 1; // Track stamps collected
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const BarbershopHeader(),
-        const SizedBox(height: 20),
-        const LoyaltyCardTitle(),
-        const SizedBox(height: 20),
-        StampRow(stampsCollected: stampsCollected), // Pass stampsCollected
-        const SizedBox(height: 20),
-        QRScanButton(onQRScanned: (result) {
-          setState(() {
-            stampsCollected++; // Increment stamps if scan is successful
-            // Here you can also add logic to validate the QR code content if needed
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('QR Code scanned: $result')),
+    return BlocConsumer<LoyaltyBloc, LoyaltyState>(
+      listener: (context, state) {
+        if (state is ErrorState) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.message)));
+        }
+        if (state is LoyaltyUpdated &&
+            state.stamps == 0 &&
+            state.history.isNotEmpty) {
+          Future.delayed(Duration.zero, () {
+            // Use Future.delayed
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => const CongratulationsDrawer(),
             );
           });
-        }),
-      ],
+        }
+      },
+      builder: (context, state) {
+        int stamps = 0;
+        if (state is LoyaltyUpdated) {
+          stamps = state.stamps;
+        }
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const BarbershopHeader(),
+            const SizedBox(height: 20),
+            const LoyaltyCardTitle(),
+            const SizedBox(height: 20),
+            StampRow(stampsCollected: stamps), // Pass stamps
+            const SizedBox(height: 20),
+            QRScanButton(onQRScanned: (result) {
+              BlocProvider.of<LoyaltyBloc>(context).add(QRScannedEvent(result));
+            }, onInvalidQR: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Invalid QR Code')),
+              );
+            }),
+          ],
+        );
+      },
     );
   }
 }

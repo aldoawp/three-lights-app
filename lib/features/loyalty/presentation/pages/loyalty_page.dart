@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tlb_app/constants/navigations/navigation_index.dart';
+import 'package:tlb_app/features/loyalty/presentation/bloc/loyalty_bloc.dart';
+import 'package:tlb_app/features/loyalty/presentation/widgets/history_item_data.dart';
 import 'package:tlb_app/features/loyalty/presentation/widgets/history_list.dart';
 import 'package:tlb_app/features/loyalty/presentation/widgets/loyalty_card.dart';
 import 'package:tlb_app/my_app.dart';
@@ -22,25 +25,32 @@ class LoyaltyPage extends StatelessWidget {
         ),
       ),
       // bottomNavigationBar: NavBar(currentIndex: loyaltyPageIndex),
-      body: Center(
-        child: SingleChildScrollView(
-          // Added SingleChildScrollView
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                child: const Padding(
-                  padding: EdgeInsets.all(24.0),
-                  child: LoyaltyCard(),
-                ),
+      body: SingleChildScrollView(
+        // Added SingleChildScrollView
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: const Padding(
+                padding: EdgeInsets.all(24.0),
+                child: LoyaltyCard(),
               ),
-              const SizedBox(height: 20),
-              const HistoryList(), // History List added here
-            ],
-          ),
+            ),
+            const SizedBox(height: 20),
+            BlocBuilder<LoyaltyBloc, LoyaltyState>(
+              // Use BlocBuilder here
+              builder: (context, state) {
+                List<HistoryItemData> historyItems = [];
+                if (state is LoyaltyUpdated) {
+                  historyItems = state.history;
+                }
+                return HistoryList(historyItems: historyItems);
+              },
+            ),
+          ],
         ),
       ),
     );

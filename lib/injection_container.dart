@@ -71,7 +71,7 @@ void initAuth() {
 void initReservation() {
   // External dependencies
   sl.registerLazySingleton(() => Dio(
-      BaseOptions(baseUrl: "https://a956-101-128-99-54.ngrok-free.app/api")));
+      BaseOptions(baseUrl: "https://2c10-180-248-24-234.ngrok-free.app/api")));
 
   // Data Layer
   sl.registerLazySingleton<ReservationRemoteDatasource>(

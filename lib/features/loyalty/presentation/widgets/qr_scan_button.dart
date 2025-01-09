@@ -3,8 +3,10 @@ import 'package:tlb_app/features/loyalty/presentation/widgets/qr_scanner_screen.
 
 class QRScanButton extends StatelessWidget {
   final Function(String) onQRScanned;
+  final VoidCallback onInvalidQR;
 
-  const QRScanButton({super.key, required this.onQRScanned});
+  const QRScanButton(
+      {super.key, required this.onQRScanned, required this.onInvalidQR});
 
   @override
   Widget build(BuildContext context) {
