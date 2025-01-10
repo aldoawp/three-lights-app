@@ -16,7 +16,7 @@ class OptionForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,
-      childAspectRatio: 4,
+      childAspectRatio: 3,
       crossAxisSpacing: 15,
       mainAxisSpacing: 12,
       shrinkWrap: true,
@@ -43,7 +43,7 @@ class OptionForm extends StatelessWidget {
                       child: Icon(
                         Icons.check_circle,
                         color: ColorResource.primary,
-                        size: 20,
+                        size: 15,
                       ),
                     ),
                   Text(

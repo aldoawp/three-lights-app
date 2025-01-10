@@ -22,9 +22,11 @@ class CatalogueBloc extends Bloc<CatalogueEvent, CatalogueState> {
     final catalogue =
         await getCatalogue.call(GetCatalogueParams(uid: event.uid));
     catalogue.fold((failure) {
-      return emit(CatalogueError(error: failure.message));
+      print("Catalogue Error: ${failure.message}");
+      emit(CatalogueError(error: failure.message));
     }, (catalogue) {
-      return emit(CatalogueLoaded(catalogue: catalogue));
+      print("Catalogue Loaded: ${catalogue.catalogues.length} items");
+      emit(CatalogueLoaded(catalogue: catalogue));
     });
   }
 
