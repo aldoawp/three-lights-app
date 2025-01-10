@@ -20,7 +20,7 @@ class HistoryList extends StatelessWidget {
       ),
       const SizedBox(height: 10),
       historyItems.isEmpty
-          ? const Center(child: Text("No history yet"))
+          ? const Center(child: Text("Belum ada riwayat"))
           : ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
