@@ -1,6 +1,6 @@
-import 'package:tlb_app/features/auth/domain/entities/user.dart';
+import 'package:tlb_app/core/common/entities/user.dart';
 
-class UserModel extends User {
+class UserModel extends UserEntity {
   const UserModel(
       {required super.uid,
       required super.name,
@@ -11,7 +11,7 @@ class UserModel extends User {
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       uid: json['id'] as String,
-      name: json['full_name'] as String? ?? '',
+      name: json['name'] as String? ?? '',
       email: json['email'] as String? ?? '',
       phone: json['phone'] as String? ?? '',
       isAnonymously: json['is_anonymous'] as bool,

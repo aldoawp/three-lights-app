@@ -12,6 +12,7 @@ class BookingAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      toolbarHeight: 80,
       title: const Text(
         'Book an appointment',
         style: TextStyle(

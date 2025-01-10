@@ -25,4 +25,7 @@ enum Routes {
   // Profile Pages
   profilePage,
   editProfilePage,
+
+  // About Pages
+  aboutPage,
 }

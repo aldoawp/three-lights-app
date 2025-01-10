@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-class User extends Equatable {
+class UserEntity extends Equatable {
   final String uid;
   final String name;
   final String email;
   final String phone;
   final bool isAnonymously;
 
-  const User(
+  const UserEntity(
       {required this.uid,
       required this.name,
       required this.email,

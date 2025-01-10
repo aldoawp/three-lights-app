@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tlb_app/app_wrapper.dart';
 import 'package:tlb_app/constants/navigations/navigation_router.dart';
-import 'package:tlb_app/features/auth/domain/entities/user.dart';
+import 'package:tlb_app/core/common/entities/user.dart';
+// import 'package:tlb_app/features/auth/domain/entities/user.dart';
 import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:tlb_app/features/auth/presentation/pages/login_page.dart';
 import 'package:tlb_app/features/profile/presentation/pages/profile_page.dart';
@@ -26,7 +27,7 @@ class ReservationPage extends StatefulWidget {
 }
 
 class _ReservationPageState extends State<ReservationPage> {
-  late User currentUser;
+  late UserEntity currentUser;
 
   @override
   void initState() {
@@ -35,7 +36,7 @@ class _ReservationPageState extends State<ReservationPage> {
     final authState = context.read<AuthBloc>().state;
 
     if (authState.user == null) {
-      currentUser = User(
+      currentUser = UserEntity(
           uid: "guest-uid",
           name: "Guest",
           email: "Silahkan sign-in di sini",
@@ -43,42 +44,54 @@ class _ReservationPageState extends State<ReservationPage> {
           isAnonymously: true);
     } else {
       currentUser = authState.user!;
-    }
 
-    // histori reservasi
-    context
-        .read<ReservationBloc>()
-        .add(LoadReservationHistoryEvents(currentUser.uid));
+      // Jika user tidak anonim, load histori reservasi
+      if (!currentUser.isAnonymously) {
+        context
+            .read<ReservationBloc>()
+            .add(LoadReservationHistoryEvents(currentUser.uid));
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // Gunakan AppBar khusus untuk Reservasi
-      appBar: ReservationAppBar(
-        userName: currentUser.isAnonymously ? "Guest" : currentUser.name,
-        userStatus: currentUser.isAnonymously
-            ? GestureDetector(
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (_) => const ProfilePage()),
-                  // );
-                  context.pushNamed(Routes.profilePage.name);
-                },
-                child: Text(
-                  "Silahkan sign-in di sini",
-                  style: const TextStyle(
-                    color: Colors.white54,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.white54,
-                    decorationThickness: 2.0,
-                  ),
-                ),
-              )
-            : Text(currentUser.email),
-      ),
+    // Jika user anonim, hanya tampilkan pesan login
+    if (currentUser.isAnonymously) {
+      return Scaffold(
+        appBar: ReservationAppBar(
+          userName: "Guest",
+          userStatus: GestureDetector(
+            onTap: () {
+              context.pushNamed(Routes.profilePage.name);
+            },
+            child: const Text(
+              "Silahkan sign-in di sini",
+              style: TextStyle(
+                color: Colors.white54,
+                decoration: TextDecoration.underline,
+                decorationColor: Colors.white54,
+                decorationThickness: 2.0,
+              ),
+            ),
+          ),
+        ),
+        body: const Center(
+          child: Text(
+            "Silahkan login terlebih dahulu untuk melakukan reservasi",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
 
+    return Scaffold(
+      appBar: ReservationAppBar(
+        userName: currentUser.name,
+        userStatus: Text(currentUser.email,
+            style: const TextStyle(color: Colors.white54)),
+      ),
       body: BlocBuilder<ReservationBloc, ReservationState>(
         builder: (context, state) {
           if (state is ReservationLoadingState) {
@@ -122,10 +135,10 @@ class _ReservationPageState extends State<ReservationPage> {
                   children: [
                     const SizedBox(height: 24.0),
                     Container(
+                      width: double.infinity,
                       margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                      padding: const EdgeInsets.all(28.0), // Adjusted padding
-                      constraints: const BoxConstraints(
-                          minHeight: 150), // Set minimal height
+                      padding: const EdgeInsets.all(28.0),
+                      constraints: const BoxConstraints(minHeight: 150),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
@@ -146,13 +159,13 @@ class _ReservationPageState extends State<ReservationPage> {
                           const Text(
                             'Saat ini anda tidak memiliki reservasi',
                             style: TextStyle(
-                              fontSize: 16, // Reduced font size
+                              fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: Colors.grey,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 24.0), // Adjusted spacing
+                          const SizedBox(height: 24.0),
                           ElevatedButton.icon(
                             onPressed: () async {
                               final result = await Navigator.push(
@@ -169,8 +182,7 @@ class _ReservationPageState extends State<ReservationPage> {
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 26.0,
-                                  vertical: 12.0), // Adjusted button padding
+                                  horizontal: 26.0, vertical: 12.0),
                               backgroundColor: ColorResource.primary,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -185,7 +197,7 @@ class _ReservationPageState extends State<ReservationPage> {
                           ),
                         ],
                       ),
-                    ),
+                    )
                   ],
                 )
               : Column(
@@ -206,7 +218,6 @@ class _ReservationPageState extends State<ReservationPage> {
 
           // Bagian Riwayat Reservasi
           _buildSectionTitle(icon: Icons.history, title: "Riwayat"),
-          // const SizedBox(height: 4.0),
           ReservationHistoryWidget(
             history: historyReservations.map((item) {
               return {

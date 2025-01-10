@@ -50,6 +50,10 @@ class AppWrapper extends StatelessWidget {
               icon: Icon(Icons.person_outline),
               label: StringResource.profile,
             ),
+            NavigationDestination(
+              icon: Icon(Icons.developer_mode_rounded),
+              label: StringResource.about,
+            ),
           ],
           onDestinationSelected: _goBranch),
     );

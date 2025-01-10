@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tlb_app/my_app.dart';
 
 class ReservationAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String userName;
-  final Widget userStatus;
-  final String? userImageUrl;
+  final String userName; // Nama user
+  final Widget userStatus; // Status user
+  final String? userImageUrl; // URL
 
   const ReservationAppBar({
     super.key,
@@ -61,5 +61,5 @@ class ReservationAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(72.0); // Tinggi AppBar
+  Size get preferredSize => const Size.fromHeight(80.0);
 }
