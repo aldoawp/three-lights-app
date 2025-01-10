@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tlb_app/features/auth/domain/entities/user.dart';
+import 'package:tlb_app/core/common/entities/user.dart';
 import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:tlb_app/features/reservation/domain/repositories/booking_repository.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/booking_bloc.dart';
@@ -20,7 +20,7 @@ class BookingPage extends StatefulWidget {
 }
 
 class _BookingPageState extends State<BookingPage> {
-  late User currentUser;
+  late UserEntity currentUser;
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _BookingPageState extends State<BookingPage> {
 
 class BookingForm extends StatelessWidget {
   final BookingLoaded state;
-  final User currentUser;
+  final UserEntity currentUser;
 
   const BookingForm(
       {super.key, required this.state, required this.currentUser});

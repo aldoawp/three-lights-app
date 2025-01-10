@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tlb_app/features/auth/domain/entities/user.dart';
+import 'package:tlb_app/core/common/entities/user.dart';
 import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:tlb_app/features/reservation/domain/repositories/booking_repository.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.dart';
@@ -21,7 +21,7 @@ class ReservationPage extends StatefulWidget {
 }
 
 class _ReservationPageState extends State<ReservationPage> {
-  late User currentUser;
+  late UserEntity currentUser;
 
   @override
   void initState() {

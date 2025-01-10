@@ -24,7 +24,7 @@ void main() async {
         create: (context) => sl<AppUserCubit>(),
       ),
       BlocProvider<AuthBloc>(create: (BuildContext context) => sl<AuthBloc>()),
-      BlocProvider(create: (BuildContext context) => ReservationBloc()),
+      BlocProvider(create: (BuildContext context) => sl<ReservationBloc>()),
       BlocProvider(create: (BuildContext context) => sl<CatalogueBloc>()),
       BlocProvider(create: (BuildContext context) => LoyaltyBloc()),
       BlocProvider(create: (BuildContext context) => ProfileBloc()),
