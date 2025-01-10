@@ -36,8 +36,8 @@ final sl = GetIt.instance;
 Future<void> init() async {
   //! Features - Auth
   initAuth();
-  initReservation();
-  initBooking();
+  // initReservation();
+  // initBooking();
 
   //! Features - Catalogues
   initCatalogue();
@@ -103,7 +103,6 @@ void initAuth() {
   );
 }
 
-
 void initCatalogue() {
   // Bloc
   sl.registerFactory(
@@ -128,6 +127,7 @@ void initCatalogue() {
   sl.registerLazySingleton<CatalogueDataSources>(
     () => CatalogueDataSourceImpl(sl()),
   );
+}
 
 void initReservation() {
   // External dependencies

@@ -11,25 +11,49 @@ import 'package:tlb_app/injection_container.dart';
 import 'package:tlb_app/core/utils/scroll_position.dart';
 import 'package:tlb_app/my_app.dart';
 
-class CatalogueCard extends StatefulWidget {
-  const CatalogueCard({
-    super.key,
-    required this.catalogue,
-    required this.items,
-    required this.height,
-    required this.scrollController,
+class CatalogueList {
+  final String styleName;
+  final String hairType;
+  final String description;
+  final List<CatalogueImage> catalogueImages;
+  final bool is_bookmarked;
+  String?
+      resolvedImageUrl; // Properti baru untuk menyimpan URL gambar yang berhasil
+
+  CatalogueList({
+    required this.styleName,
+    required this.hairType,
+    required this.description,
+    required this.catalogueImages,
+    required this.is_bookmarked,
+    this.resolvedImageUrl, // Optional karena bisa diisi nanti
   });
 
-  final CatalogueEntity catalogue;
-  final List<CatalogueList> items;
-  final double height;
-  final ScrollController scrollController;
-
-  @override
-  State<CatalogueCard> createState() => _CatalogueCardState();
+  // Jika ada factory atau metode parsing, tambahkan 'resolvedImageUrl' di situ
 }
 
 class _CatalogueCardState extends State<CatalogueCard> {
+  String resolveImageUrl(CatalogueList item, String fileName) {
+    // Jika sudah ada resolvedImageUrl, gunakan itu
+    if (item.resolvedImageUrl != null) {
+      return item.resolvedImageUrl!;
+    }
+
+    // Coba primary URL terlebih dahulu
+    final primaryUrl = fileName;
+    // Jika gagal, gunakan backup URL
+    final backupUrl = 'https://hairstyle-catalogue.nos.wjv-1.neo.id/$fileName';
+
+    return primaryUrl;
+  }
+
+  void setBackupUrl(CatalogueList item, String fileName) {
+    final backupUrl = 'https://hairstyle-catalogue.nos.wjv-1.neo.id/$fileName';
+    setState(() {
+      item.resolvedImageUrl = backupUrl; // Update URL permanen
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     String userId =
@@ -49,8 +73,8 @@ class _CatalogueCardState extends State<CatalogueCard> {
                 borderRadius: BorderRadius.circular(4),
                 child: CachedNetworkImage(
                   imageUrl: item.catalogueImages.isNotEmpty
-                      ? item.catalogueImages[0].imageUrl
-                      : '',
+                      ? resolveImageUrl(item, item.catalogueImages[0].imageUrl)
+                      : '', // Gunakan URL fallback jika gagal
                   width: 60,
                   height: 60,
                   fit: BoxFit.cover,
@@ -64,8 +88,11 @@ class _CatalogueCardState extends State<CatalogueCard> {
                       ),
                     ),
                   ),
-                  errorWidget: (context, url, error) =>
-                      Icon(Icons.broken_image_rounded),
+                  errorWidget: (context, url, error) {
+                    // Ketika gambar gagal dimuat, gunakan backup URL
+                    setBackupUrl(item, item.catalogueImages[0].imageUrl);
+                    return Icon(Icons.broken_image_rounded);
+                  },
                 ),
               ),
               title: Text(
@@ -171,14 +198,12 @@ class _CatalogueCardState extends State<CatalogueCard> {
                                       childAspectRatio: 1.47,
                                     ),
                                     itemBuilder: (context, index) {
-                                      final imageUrl =
-                                          item.catalogueImages[index].imageUrl;
+                                      final imageUrl = resolveImageUrl(item,
+                                          item.catalogueImages[index].imageUrl);
                                       return ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
                                         child: CachedNetworkImage(
                                           imageUrl: imageUrl,
-                                          // width: 60,
-                                          // height: 60,
                                           fit: BoxFit.cover,
                                           progressIndicatorBuilder: (context,
                                                   url, downloadProgress) =>
