@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tlb_app/my_app.dart';
 
 class ReservationAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String userName; // Nama user
-  final Widget userStatus; // Status user
-  final String? userImageUrl; // URL
+  final String userName;
+  final Widget userStatus;
+  final String? userImageUrl;
 
   const ReservationAppBar({
     super.key,
