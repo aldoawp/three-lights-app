@@ -22,8 +22,7 @@ class LoyaltyCard extends StatelessWidget {
         if (state is LoyaltyUpdated &&
             state.stamps == 0 &&
             state.history.isNotEmpty) {
-          Future.delayed(Duration.zero, () {
-            // Use Future.delayed
+          Future.delayed(Duration(milliseconds: 500), () {
             showModalBottomSheet(
               context: context,
               builder: (context) => const CongratulationsDrawer(),

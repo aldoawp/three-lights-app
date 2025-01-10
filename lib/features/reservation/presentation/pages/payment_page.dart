@@ -49,8 +49,11 @@ class _PaymentPageState extends State<PaymentPage> {
     if (_isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Pembayaran'),
-          backgroundColor: Colors.green,
+          title:
+              const Text('Pembayaran', style: TextStyle(color: Colors.white)),
+          backgroundColor: ColorResource.primary,
+          iconTheme: const IconThemeData(
+              color: Colors.white), // Mengubah warna back arrow
         ),
         body: const Center(
           child: CircularProgressIndicator(),
@@ -61,8 +64,11 @@ class _PaymentPageState extends State<PaymentPage> {
     if (_paymentToken == null || _paymentToken!.isEmpty) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Pembayaran'),
+          title:
+              const Text('Pembayaran', style: TextStyle(color: Colors.white)),
           backgroundColor: ColorResource.primary,
+          iconTheme: const IconThemeData(
+              color: Colors.white), // Mengubah warna back arrow
         ),
         body: const Center(
           child: Text('Failed to load payment page.'),
@@ -85,8 +91,7 @@ class _PaymentPageState extends State<PaymentPage> {
               );
             } else if (url.contains("example.com")) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                    content: Text("Payment completed successfully.")),
+                const SnackBar(content: Text("Pembayaran berhasil.")),
               );
             }
           },
@@ -98,8 +103,10 @@ class _PaymentPageState extends State<PaymentPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pembayaran'),
-        backgroundColor: Colors.green,
+        title: const Text('Pembayaran', style: TextStyle(color: Colors.white)),
+        backgroundColor: ColorResource.primary,
+        iconTheme: const IconThemeData(
+            color: Colors.white), // Mengubah warna back arrow
       ),
       body: WebViewWidget(controller: _controller),
     );

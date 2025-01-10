@@ -163,9 +163,7 @@ class GoogleUserContent extends StatelessWidget {
                       const SizedBox(height: 69),
                       OutlinedButton.icon(
                         onPressed: () {
-                          context
-                              .read<AuthBloc>()
-                              .add(UserLinkingAccountEvent());
+                          context.read<AuthBloc>().add(UserSignOutEvent());
                           // Supabase.instance.client.auth.signOut();
                           // context.read<AuthBloc>().add(SignedOutEvent());
                           // Navigator.pushReplacementNamed(

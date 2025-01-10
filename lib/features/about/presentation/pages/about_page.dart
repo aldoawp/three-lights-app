@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tlb_app/features/about/presentation/widgets/developer-card.dart';
+import 'package:tlb_app/my_app.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -8,7 +9,11 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('About'),
+        title: const Text(
+          'About',
+          style: TextStyle(color: ColorResource.offWhite),
+        ),
+        backgroundColor: ColorResource.primary,
       ),
       body: SingleChildScrollView(
         child: Padding(

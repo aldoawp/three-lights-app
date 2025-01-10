@@ -3,8 +3,8 @@ import 'package:tlb_app/my_app.dart';
 
 class ReservationAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userName; // Nama user
-  final String userStatus; // Status user
-  final String? userImageUrl; // URL gambar profil (opsional)
+  final Widget userStatus; // Status user
+  final String? userImageUrl; // URL
 
   const ReservationAppBar({
     super.key,
@@ -49,29 +49,10 @@ class ReservationAppBar extends StatelessWidget implements PreferredSizeWidget {
                       color: Colors.white,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      // Aksi sign-in atau lainnya
-                    },
-                    child: Text(
-                      userStatus,
-                      style: const TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.white70,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
+                  userStatus, // Directly use the Widget passed as userStatus
                 ],
               ),
               const Spacer(),
-              // Icon Search
-              // IconButton(
-              //   icon: const Icon(Icons.notifications, color: Colors.white),
-              //   onPressed: () {
-              //     // Tambahkan aksi notifikasi
-              //   },
-              // ),
             ],
           ),
         ),
@@ -80,5 +61,5 @@ class ReservationAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(72.0); // Tinggi AppBar
+  Size get preferredSize => const Size.fromHeight(80.0);
 }
