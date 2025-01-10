@@ -41,17 +41,11 @@ class LoyaltyCard extends StatelessWidget {
           children: [
             const BarbershopHeader(),
             const SizedBox(height: 20),
+            const Divider(),
             const LoyaltyCardTitle(),
+            const Divider(),
             const SizedBox(height: 20),
             StampRow(stampsCollected: stamps), // Pass stamps
-            const SizedBox(height: 20),
-            QRScanButton(onQRScanned: (result) {
-              BlocProvider.of<LoyaltyBloc>(context).add(QRScannedEvent(result));
-            }, onInvalidQR: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Invalid QR Code')),
-              );
-            }),
           ],
         );
       },

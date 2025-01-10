@@ -131,8 +131,8 @@ void initCatalogue() {
 
 void initReservation() {
   // External dependencies
-  sl.registerLazySingleton(() => Dio(
-      BaseOptions(baseUrl: "https://2c10-180-248-24-234.ngrok-free.app/api")));
+  sl.registerLazySingleton(() =>
+      Dio(BaseOptions(baseUrl: "https://api-threelights.vercel.app/api")));
 
   // Data Layer
   sl.registerLazySingleton<ReservationRemoteDatasource>(

@@ -5,6 +5,7 @@ import 'package:tlb_app/features/loyalty/presentation/bloc/loyalty_bloc.dart';
 import 'package:tlb_app/features/loyalty/presentation/widgets/history_item_data.dart';
 import 'package:tlb_app/features/loyalty/presentation/widgets/history_list.dart';
 import 'package:tlb_app/features/loyalty/presentation/widgets/loyalty_card.dart';
+import 'package:tlb_app/features/loyalty/presentation/widgets/qr_scan_button.dart';
 import 'package:tlb_app/my_app.dart';
 import 'package:tlb_app/global_widget.dart';
 
@@ -39,6 +40,14 @@ class LoyaltyPage extends StatelessWidget {
                 child: LoyaltyCard(),
               ),
             ),
+            const SizedBox(height: 20),
+            QRScanButton(onQRScanned: (result) {
+              BlocProvider.of<LoyaltyBloc>(context).add(QRScannedEvent(result));
+            }, onInvalidQR: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Invalid QR Code')),
+              );
+            }),
             const SizedBox(height: 20),
             BlocBuilder<LoyaltyBloc, LoyaltyState>(
               // Use BlocBuilder here

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tlb_app/features/loyalty/presentation/widgets/qr_scanner_screen.dart';
+import 'package:tlb_app/my_app.dart';
 
 class QRScanButton extends StatelessWidget {
   final Function(String) onQRScanned;
@@ -21,7 +22,8 @@ class QRScanButton extends StatelessWidget {
         }
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF4CAF50), // Green background
+        backgroundColor:
+            ColorResource.primary, // Example color, replace with your theme
         foregroundColor: Colors.white, // White text
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         shape: RoundedRectangleBorder(
@@ -29,7 +31,9 @@ class QRScanButton extends StatelessWidget {
         ),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max, // Shrinks to fit content
+        mainAxisAlignment:
+            MainAxisAlignment.center, // Centers content in the Row
         children: const [
           Text('Pindai Kode QR'),
           SizedBox(width: 8),
