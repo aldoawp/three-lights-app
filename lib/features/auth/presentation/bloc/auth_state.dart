@@ -14,7 +14,7 @@ final class AuthInitial extends AuthState {}
 final class AuthLoading extends AuthState {}
 
 final class Authenticated extends AuthState {
-  final entity.User user;
+  final UserEntity user;
 
   Authenticated({required this.user});
 }

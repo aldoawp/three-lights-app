@@ -9,6 +9,8 @@ abstract interface class AuthDataSource {
   Future<UserModel> signInAnonymously();
   Future<UserModel> signInWithGoogle();
   Future<UserModel?> getCurrentUserData();
+  Future<void> signOut();
+  Future<UserModel> convertAnonToGoogle();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -100,16 +102,61 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   Future<UserModel?> getCurrentUserData() async {
+    print(currentUserSession);
     try {
       if (currentUserSession != null) {
-        final userData = currentUserSession;
+        final userData = await supabaseClient
+            .from('auth_users_view')
+            .select('*')
+            .eq('id', currentUserSession!.user.id)
+            .maybeSingle();
         print('this session: $userData');
 
-        final userModel = UserModel.fromJson(userData!.user.toJson());
+        final userModel = UserModel.fromJson(currentUserSession!.user.toJson());
 
         return userModel;
       }
       return null;
+    } on AuthException catch (e) {
+      throw ServerException(e.message);
+    } on ServerException catch (e) {
+      throw ServerException(e.message);
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+      await supabaseClient.auth.signOut();
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel> convertAnonToGoogle() async {
+    try {
+      final isLinked =
+          await supabaseClient.auth.linkIdentity(OAuthProvider.google);
+      print('...isLinked: $isLinked...');
+
+      if (!isLinked) {
+        throw ServerException(
+            'Failed to link anonymous user to Google account');
+      }
+
+      final currentUser = supabaseClient.auth.currentUser;
+      print('...currentUser: $currentUser...');
+
+      if (currentUser == null) {
+        throw ServerException('User not found after linking');
+      }
+
+      final userModel = UserModel.fromJson(currentUser.toJson());
+      print('...newUser: $userModel...');
+      return userModel;
     } on AuthException catch (e) {
       throw ServerException(e.message);
     } on ServerException catch (e) {

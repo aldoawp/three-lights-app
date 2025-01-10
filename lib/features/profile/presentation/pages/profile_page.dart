@@ -36,10 +36,10 @@ class ProfilePage extends StatelessWidget {
                   Text("Main Content"),
                   ElevatedButton(
                       onPressed: () {
-                        Supabase.instance.client.auth.signOut();
-                        context.read<AuthBloc>().add(SignedOutEvent());
-                        Navigator.pushReplacementNamed(
-                            context, Routes.loginPage.name);
+                        // Supabase.instance.client.auth.signOut();
+                        // context.read<AuthBloc>().add(SignedOutEvent());
+                        // Navigator.pushReplacementNamed(
+                        //     context, Routes.loginPage.name);
                       },
                       child: Text("Logout")),
                 ],
