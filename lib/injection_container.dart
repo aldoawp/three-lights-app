@@ -36,8 +36,8 @@ final sl = GetIt.instance;
 Future<void> init() async {
   //! Features - Auth
   initAuth();
-  initReservation();
-  initBooking();
+  // initReservation();
+  // initBooking();
 
   //! Features - Catalogues
   initCatalogue();

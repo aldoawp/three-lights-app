@@ -17,6 +17,8 @@ import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.
 import 'package:tlb_app/features/reservation/presentation/pages/book_appointment_page.dart';
 import 'package:tlb_app/features/reservation/presentation/pages/reservation_page.dart';
 import 'package:tlb_app/injection_container.dart';
+import 'package:tlb_app/features/catalogue/domain/usecases/toggle_bookmark.dart';
+import 'package:tlb_app/features/catalogue/domain/usecases/get_catalogue.dart';
 
 part 'constants/styles/text_style.dart';
 part 'constants/styles/button_style.dart';
@@ -57,7 +59,13 @@ class MyApp extends StatelessWidget {
             return bloc;
           },
         ),
-        BlocProvider(create: (BuildContext context) => sl<CatalogueBloc>()),
+        BlocProvider(
+          create: (BuildContext context) => CatalogueBloc(
+            getCatalogue: sl<GetCatalogue>(), // Ambil dari service locator
+            toggleBookmark:
+                sl<ToggleBookmark>(), // Tambahkan dependensi yang diperlukan
+          ),
+        ),
         BlocProvider(create: (BuildContext context) => LoyaltyBloc()),
         BlocProvider(create: (BuildContext context) => ProfileBloc()),
       ],
