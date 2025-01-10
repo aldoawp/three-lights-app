@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tlb_app/app_wrapper.dart';
+import 'package:tlb_app/constants/navigations/navigation_router.dart';
 import 'package:tlb_app/features/auth/domain/entities/user.dart';
 import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:tlb_app/features/auth/presentation/pages/login_page.dart';
+import 'package:tlb_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:tlb_app/features/reservation/domain/repositories/booking_repository.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/reservation_bloc.dart';
 import 'package:tlb_app/features/reservation/presentation/bloc/reservation_event.dart';
@@ -27,8 +32,20 @@ class _ReservationPageState extends State<ReservationPage> {
   void initState() {
     super.initState();
 
-    // Ambil user aktif dan muat histori reservasi
-    currentUser = context.read<AuthBloc>().state.user!;
+    final authState = context.read<AuthBloc>().state;
+
+    if (authState.user == null) {
+      currentUser = User(
+          uid: "guest-uid",
+          name: "Guest",
+          email: "Silahkan sign-in di sini",
+          phone: "-",
+          isAnonymously: true);
+    } else {
+      currentUser = authState.user!;
+    }
+
+    // histori reservasi
     context
         .read<ReservationBloc>()
         .add(LoadReservationHistoryEvents(currentUser.uid));
@@ -39,10 +56,29 @@ class _ReservationPageState extends State<ReservationPage> {
     return Scaffold(
       // Gunakan AppBar khusus untuk Reservasi
       appBar: ReservationAppBar(
-        userName: currentUser.name ?? "Guest",
-        userStatus: currentUser.email ?? "Silahkan sign-in di sini",
-        // userImageUrl: currentUser.imageUrl,
+        userName: currentUser.isAnonymously ? "Guest" : currentUser.name,
+        userStatus: currentUser.isAnonymously
+            ? GestureDetector(
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (_) => const ProfilePage()),
+                  // );
+                  context.pushNamed(Routes.profilePage.name);
+                },
+                child: Text(
+                  "Silahkan sign-in di sini",
+                  style: const TextStyle(
+                    color: Colors.white54,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white54,
+                    decorationThickness: 2.0,
+                  ),
+                ),
+              )
+            : Text(currentUser.email),
       ),
+
       body: BlocBuilder<ReservationBloc, ReservationState>(
         builder: (context, state) {
           if (state is ReservationLoadingState) {

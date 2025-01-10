@@ -40,14 +40,14 @@ class _BookingPageState extends State<BookingPage> {
       body: BlocListener<BookingBloc, BookingState>(
         listener: (context, state) {
           if (state is BookingSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  sl<BookingRepository>().getPaymentToken ?? 'KONYOL',
-                ),
-                duration: Duration(seconds: 5),
-              ),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text(
+            //       sl<BookingRepository>().getPaymentToken ?? 'KONYOL',
+            //     ),
+            //     duration: Duration(seconds: 5),
+            //   ),
+            // );
             Navigator.push(
                 context, MaterialPageRoute(builder: (_) => PaymentPage()));
           } else if (state is BookingError) {
