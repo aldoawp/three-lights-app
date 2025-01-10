@@ -24,7 +24,7 @@ class AboutPage extends StatelessWidget {
               const SizedBox(height: 16),
               // Short Description
               const Text(
-                'Three Lights Barbershop is dedicated to providing high-quality grooming services in a comfortable and modern environment. We aim to be your go-to barbershop for all your grooming needs.',
+                'Three Lights Barbershop berkomitmen untuk menyediakan layanan perawatan berkualitas tinggi dalam lingkungan yang nyaman dan modern. Kami bertujuan untuk menjadi barbershop pilihan Anda untuk semua kebutuhan perawatan Anda.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16),
               ),
