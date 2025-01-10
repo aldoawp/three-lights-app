@@ -15,12 +15,13 @@ class CatalogueDataSourceImpl implements CatalogueDataSources {
 
   @override
   Future<CatalogueModel> getCatalogues(String uid) async {
+    print(uid);
     try {
       final response = await supabaseClient
           .rpc('fetch_catalogues', params: {'user_id': uid});
       // print(response);
       final catalogueModel = CatalogueModel.fromJson(response);
-      // print('...catalogue: $catalogueModel...');
+      print('...catalogue: $catalogueModel...');
       return catalogueModel;
     } catch (e) {
       throw ServerException(e.toString());

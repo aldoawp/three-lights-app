@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tlb_app/features/reservation/domain/repositories/booking_repository.dart';
 import 'package:tlb_app/features/reservation/presentation/pages/reservation_page.dart';
 import 'package:tlb_app/injection_container.dart';
+import 'package:tlb_app/my_app.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -61,7 +62,7 @@ class _PaymentPageState extends State<PaymentPage> {
       return Scaffold(
         appBar: AppBar(
           title: const Text('Pembayaran'),
-          backgroundColor: Colors.green,
+          backgroundColor: ColorResource.primary,
         ),
         body: const Center(
           child: Text('Failed to load payment page.'),
@@ -74,19 +75,20 @@ class _PaymentPageState extends State<PaymentPage> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) {
-            if (url.contains("finish")) {
+            debugPrint("URL started loading: $url");
+            if (url.contains("finish") || url.contains("status_code=200")) {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ReservationPage(),
                 ),
               );
+            } else if (url.contains("example.com")) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Text("Payment completed successfully.")),
+              );
             }
-          },
-          onWebResourceError: (WebResourceError error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Error: ${error.description}")),
-            );
           },
         ),
       )

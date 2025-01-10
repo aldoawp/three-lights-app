@@ -42,4 +42,24 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> signOut() async {
+    try {
+      final user = await authDataSource.signOut();
+      return Right(user);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> convertAnonToGoogle() async {
+    try {
+      final user = await authDataSource.convertAnonToGoogle();
+      return Right(user);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
 }

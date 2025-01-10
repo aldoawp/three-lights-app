@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
             return bloc;
           },
         ),
-        BlocProvider(create: (BuildContext context) => CatalogueBloc()),
+        BlocProvider(create: (BuildContext context) => sl<CatalogueBloc>()),
         BlocProvider(create: (BuildContext context) => LoyaltyBloc()),
         BlocProvider(create: (BuildContext context) => ProfileBloc()),
       ],

@@ -7,9 +7,11 @@ import 'package:tlb_app/core/utils/scroll_position.dart';
 import 'package:tlb_app/features/auth/data/datasources/auth_data_source.dart';
 import 'package:tlb_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:tlb_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:tlb_app/features/auth/domain/usecases/convert_anon_to_google.dart';
 import 'package:tlb_app/features/auth/domain/usecases/current_user.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_anonymous.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_google.dart';
+import 'package:tlb_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:tlb_app/features/catalogue/data/datasources/catalogue_data_sources.dart';
 import 'package:tlb_app/features/catalogue/data/repositories/catalogue_repository_impl.dart';
@@ -64,10 +66,13 @@ void initAuth() {
   // Bloc
   sl.registerFactory(
     () => AuthBloc(
-        userSignInAnonymously: sl(),
-        userSignInGoogle: sl(),
-        currentUser: sl(),
-        appUserCubit: sl()),
+      userSignInAnonymously: sl(),
+      userSignInGoogle: sl(),
+      currentUser: sl(),
+      appUserCubit: sl(),
+      userSignOut: sl(),
+      convertAnonToGoogle: sl(),
+    ),
   );
 
   // UseCases
@@ -80,6 +85,12 @@ void initAuth() {
   sl.registerLazySingleton(
     () => UserSignInGoogle(sl()),
   );
+  sl.registerLazySingleton(
+    () => UserSignOut(sl()),
+  );
+  sl.registerLazySingleton(
+    () => ConvertAnonToGoogle(sl()),
+  );
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(
@@ -91,7 +102,6 @@ void initAuth() {
     () => AuthDataSourceImpl(sl()),
   );
 }
-
 
 void initCatalogue() {
   // Bloc
@@ -117,11 +127,12 @@ void initCatalogue() {
   sl.registerLazySingleton<CatalogueDataSources>(
     () => CatalogueDataSourceImpl(sl()),
   );
+}
 
 void initReservation() {
   // External dependencies
-  sl.registerLazySingleton(
-      () => Dio(BaseOptions(baseUrl: "http://192.168.137.1:3000/api")));
+  sl.registerLazySingleton(() =>
+      Dio(BaseOptions(baseUrl: "https://api-threelights.vercel.app/api")));
 
   // Data Layer
   sl.registerLazySingleton<ReservationRemoteDatasource>(

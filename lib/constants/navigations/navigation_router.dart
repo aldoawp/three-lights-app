@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tlb_app/app_wrapper.dart';
-import 'package:tlb_app/core/common/cubits/app_user/app_user_cubit.dart';
-import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:tlb_app/features/auth/presentation/pages/login_page.dart';
-import 'package:tlb_app/features/auth/presentation/pages/onboarding_1_page.dart';
-import 'package:tlb_app/features/auth/presentation/pages/onboarding_2_page.dart';
-import 'package:tlb_app/features/auth/presentation/pages/onboarding_3_page.dart';
-import 'package:tlb_app/features/catalogue/presentation/pages/ask_ai_page.dart';
-import 'package:tlb_app/features/catalogue/presentation/pages/catalogue_page.dart';
-import 'package:tlb_app/features/catalogue/presentation/pages/favorite_page.dart';
-import 'package:tlb_app/features/loyalty/presentation/pages/loyalty_page.dart';
-import 'package:tlb_app/features/profile/presentation/pages/profile_page.dart';
+import 'package:tlb_app/features/auth/presentation/pages/edit_profile_page.dart';
+import '../../app_wrapper.dart';
+import 'package:tlb_app/features/about/presentation/pages/about_page.dart';
+import '../../core/common/cubits/app_user/app_user_cubit.dart';
+import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/onboarding_1_page.dart';
+import '../../features/auth/presentation/pages/onboarding_2_page.dart';
+import '../../features/auth/presentation/pages/onboarding_3_page.dart';
+import '../../features/catalogue/presentation/pages/ask_ai_page.dart';
+import '../../features/catalogue/presentation/pages/catalogue_page.dart';
+import '../../features/catalogue/presentation/pages/favorite_page.dart';
+import '../../features/loyalty/presentation/pages/loyalty_page.dart';
+// import 'package:tlb_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:tlb_app/features/reservation/presentation/pages/reservation_page.dart';
 import 'package:tlb_app/my_app.dart';
+
+import '../../features/auth/presentation/pages/profile_page.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorReservation = GlobalKey<NavigatorState>();
 final _shellNavigatorCatalogue = GlobalKey<NavigatorState>();
 final _shellNavigatorLoyalty = GlobalKey<NavigatorState>();
 final _shellNavigatorProfile = GlobalKey<NavigatorState>();
+final _shellNavigatorAbout = GlobalKey<NavigatorState>();
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -37,10 +42,13 @@ final GoRouter router = GoRouter(
         context.read<AuthBloc>().add(AuthIsUserLoggedIn());
 
         await for (final authState in context.read<AuthBloc>().stream) {
+          print(authState.toString());
           if (authState is Authenticated) {
             print('User is authenticated');
             return '/reservation';
-          } else if (authState is Unauthenticated) {
+          }
+          // return null;
+          else if (authState is AuthError) {
             print('User is not authenticated');
             return null;
           }
@@ -128,17 +136,22 @@ final GoRouter router = GoRouter(
               path: '/profile',
               name: Routes.profilePage.name,
               builder: (context, state) => ProfilePage(),
-              // routes: [
-              //   GoRoute(
-              //     path: 'editProfile',
-              //     name: Routes.editProfilePage.name,
-              //     //! need to build /profile/editProfile
-              //   ),
-              // ],
+              routes: [
+                GoRoute(
+                  path: 'editProfile',
+                  name: Routes.editProfilePage.name,
+                  builder: (context, state) => EditProfilePage(),
+                ),
+              ],
             ),
-          ],
-        )
-      ],
-    ),
-  ],
-);
+          ]),
+          StatefulShellBranch(navigatorKey: _shellNavigatorAbout, routes: [
+            GoRoute(
+              path: '/about',
+              name: Routes.aboutPage.name,
+              builder: (context, state) => AboutPage(),
+            ),
+          ])
+        ],
+      ),
+    ]);

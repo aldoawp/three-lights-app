@@ -3,9 +3,11 @@ import 'package:equatable/equatable.dart';
 import 'package:tlb_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:tlb_app/core/usecases/usecase.dart';
 import 'package:tlb_app/core/common/entities/user.dart';
+import 'package:tlb_app/features/auth/domain/usecases/convert_anon_to_google.dart';
 import 'package:tlb_app/features/auth/domain/usecases/current_user.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_anonymous.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_google.dart';
+import 'package:tlb_app/features/auth/domain/usecases/user_sign_out.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -15,11 +17,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserSignInAnonymous userSignInAnonymously;
   final UserSignInGoogle userSignInGoogle;
   final CurrentUser currentUser;
+  final UserSignOut userSignOut;
+  final ConvertAnonToGoogle convertAnonToGoogle;
 
   AuthBloc(
       {required this.userSignInAnonymously,
       required this.userSignInGoogle,
       required this.currentUser,
+      required this.userSignOut,
+      required this.convertAnonToGoogle,
       required this.appUserCubit})
       : super(AuthInitial()) {
     // _setUpAuthListener();
@@ -28,6 +34,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthIsUserLoggedIn>(_isUserLoggedIn);
     on<UserSignInAnonymousEvent>(_onSignInAnonymous);
     on<UserSignInGoogleEvent>(_onSignInGoogle);
+    on<UserSignOutEvent>(_onSignOut);
+    on<UserLinkingAccountEvent>(_onConvertAccount);
   }
   Future<void> _isUserLoggedIn(
       AuthIsUserLoggedIn event, Emitter<AuthState> emit) async {
@@ -64,6 +72,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       UserSignInGoogleEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     final res = await userSignInGoogle.call(NoParams());
+
+    res.fold(
+      (l) => emit(AuthError(error: l.message)),
+      (r) => _emitAuthSuccess(r, emit),
+    );
+  }
+
+  Future<void> _onSignOut(
+      UserSignOutEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    final res = await userSignOut.call(NoParams());
+    print(res.runtimeType);
+
+    res.fold(
+      (l) => emit(AuthError(error: l.message)),
+      (r) {
+        appUserCubit.updateUser(null);
+        emit(AuthInitial());
+      },
+    );
+  }
+
+  Future<void> _onConvertAccount(
+      UserLinkingAccountEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    final res = await convertAnonToGoogle.call(NoParams());
 
     res.fold(
       (l) => emit(AuthError(error: l.message)),

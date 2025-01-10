@@ -369,10 +369,10 @@ packages:
     dependency: transitive
     description:
       name: gotrue
-      sha256: b9541c62edc0ee1fddf2c95364251b8076a93bcdbc3ad27f14a633d187e89ccc
+      sha256: "74b29f10ef7239e254847d52ecce1eac2a08c2cfced6a78280859391f5157e8b"
       url: "https://pub.dev"
     source: hosted
-    version: "2.11.0"
+    version: "2.10.0"
   gtk:
     dependency: transitive
     description:
@@ -501,6 +501,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  mobile_scanner:
+    dependency: "direct main"
+    description:
+      name: mobile_scanner
+      sha256: "728828a798d1a2ee506beb652ca23d974c542c96ed03dcbd5eaf97bef96cdaad"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.2"
   nested:
     dependency: transitive
     description:
@@ -609,10 +617,10 @@ packages:
     dependency: transitive
     description:
       name: postgrest
-      sha256: "9f759ac497a24839addbed69d9569ea6d51d2e4834c672b8c2a73752fb6945c8"
+      sha256: c6ddc0a2c238c5a686b00094edad728a49645579bf5868a06e1ad95c4918fe2c
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "2.3.0"
   provider:
     dependency: transitive
     description:
@@ -798,15 +806,15 @@ packages:
     dependency: transitive
     description:
       name: supabase
-      sha256: ecdfb226c483f05fd10425304de744144dfdda2f33d14151d2604cebe8c6d077
+      sha256: dccda29b5bda0a04f6725480e180353486dfd5d9dd2b8b17a30a7a7d094f7042
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.0"
+    version: "2.5.0"
   supabase_flutter:
     dependency: "direct main"
     description:
       name: supabase_flutter
-      sha256: bdbc6770e0e91db0b9d931f41ea4ee311d8819f539743f47e8cc795b492be75a
+      sha256: "8c056c83e9163c287e031cdd6fa34a452bad4ec7342a27b12190613f77c358e9"
       url: "https://pub.dev"
     source: hosted
     version: "2.8.0"
@@ -918,7 +926,7 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_windows
-      sha256: "44cf3aabcedde30f2dba119a9dea3b0f2672fbe6fa96e85536251d678216b3c4"
+      sha256: "49c10f879746271804767cb45551ec5592cdab00ee105c06dddde1a98f73b185"
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
