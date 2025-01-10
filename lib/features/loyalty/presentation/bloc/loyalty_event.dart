@@ -11,6 +11,7 @@ class QRScannedEvent extends LoyaltyEvent {
 
   @override
   List<Object?> get props => [qrCode];
+
 }
 
 class ResetStampsEvent extends LoyaltyEvent {}
