@@ -4,6 +4,13 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
+dependencies {
+    implementation "androidx.credentials:credentials:1.5.0-beta01"
+
+    // optional - needed for credentials support from play services, for devices running
+    // Android 13 and below.
+    implementation "androidx.credentials:credentials-play-services-auth:1.5.0-beta01"
+}
 
 android {
     namespace = "com.example.tlb_app"
@@ -37,8 +44,17 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
 }
 
 flutter {
     source = "../.."
 }
+
