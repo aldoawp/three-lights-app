@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_scanner/mobile_scanner.dart'; // Import mobile_scanner
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:tlb_app/my_app.dart'; // Import mobile_scanner
 
 class QRScannerScreen extends StatefulWidget {
   const QRScannerScreen({super.key});
@@ -21,7 +22,17 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mobile Scanner')),
+      appBar: AppBar(
+        title: const Text(
+          'Mobile Scanner',
+          style: TextStyle(color: ColorResource.offWhite),
+        ),
+        backgroundColor: ColorResource.primary,
+        iconTheme: const IconThemeData(
+          // Add this
+          color: ColorResource.offWhite, // Set the color here
+        ),
+      ),
       body: MobileScanner(
         controller: cameraController,
         onDetect: (capture) {

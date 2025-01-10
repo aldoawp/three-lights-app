@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tlb_app/my_app.dart';
 
 class Stamp extends StatelessWidget {
   final bool filled;
@@ -13,11 +14,9 @@ class Stamp extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(color: Colors.grey),
-        color: filled ? const Color(0xFF4CAF50) : Colors.transparent,
+        color: filled ? ColorResource.primary : Colors.transparent,
       ),
-      child: filled
-          ? const Icon(Icons.person, color: Colors.white)
-          : null,
+      child: filled ? const Icon(Icons.person, color: Colors.white) : null,
     );
   }
 }
