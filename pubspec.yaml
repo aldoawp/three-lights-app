@@ -42,8 +42,6 @@ flutter:
   assets:
     - .env
     - path: lib/assets/images/
-      transformers:
-        - package: png_optimizer
 
 flutter_native_splash:
   android: true
