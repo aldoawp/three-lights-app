@@ -29,7 +29,7 @@ class AnonUserContent extends StatelessWidget {
                 icon: Icons.login,
                 iconPosition: IconPosition.trailing,
                 onPressedAction: () async {
-                  context.read<AuthBloc>().add(UserLinkingAccountEvent());
+                  context.read<AuthBloc>().add(UserSignInGoogleEvent());
                 },
               ),
             ),

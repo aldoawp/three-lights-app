@@ -29,16 +29,34 @@ class GoogleUserContent extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 20),
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.grey[300],
-                        child: Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
+                      state.user.picture.isNotEmpty
+                          ? Container(
+                              width: 90,
+                              height: 90,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: ColorResource.primary, // Warna border
+                                  width: 3.0,
+                                ),
+                                image: DecorationImage(
+                                  image: NetworkImage(state.user.picture),
+                                  fit: BoxFit
+                                      .scaleDown, // Gambar akan menyesuaikan dan terpotong jika perlu
+                                ),
+                              ),
+                            )
+                          : CircleAvatar(
+                              radius: 45,
+                              backgroundColor: Colors.grey[300],
+                              child: Icon(
+                                Icons.person,
+                                size: 45,
+                                color: Colors.white,
+                              ),
+                            ),
+
+                      // const SizedBox(height: 10),
                       TextButton.icon(
                         onPressed: () {
                           context.pushNamed(Routes.editProfilePage.name);
@@ -131,9 +149,9 @@ class GoogleUserContent extends StatelessWidget {
                             ),
                             SizedBox(width: 12),
                             Text(
-                              state.user.phone.isNotEmpty
-                                  ? state.user.phone
-                                  : 'No HP user tidak ditemukan',
+                              state.user.email.isNotEmpty
+                                  ? state.user.email
+                                  : 'Email user tidak ditemukan',
                               style: TextStyle(color: Colors.black54),
                             ),
                           ],

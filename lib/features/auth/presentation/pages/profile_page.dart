@@ -39,19 +39,19 @@ class ProfilePage extends StatelessWidget {
             if (state is AuthLoading) {
               return Loader();
             }
-            // if (state is Authenticated) {
-            //   if (state.user.isAnonymously) {
-            //     // return Center(
-            //     //   child: Text('Sign In First'),
-            //     // );
-            //     return AnonUserContent();
-            //   } else {
-            //     return GoogleUserContent();
-            //   }
-            // }
-            return GoogleUserContent();
+            if (state is Authenticated) {
+              if (state.user.isAnonymously) {
+                // return Center(
+                //   child: Text('Sign In First'),
+                // );
+                return AnonUserContent();
+              } else {
+                return GoogleUserContent();
+              }
+            }
+            // return GoogleUserContent();
             // return AnonUserContent();
-            // return Container();
+            return Container();
           },
         ),
       ),

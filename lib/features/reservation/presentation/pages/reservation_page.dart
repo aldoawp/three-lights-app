@@ -41,6 +41,7 @@ class _ReservationPageState extends State<ReservationPage> {
           name: "Guest",
           email: "Silahkan sign-in di sini",
           phone: "-",
+          picture: "-",
           isAnonymously: true);
     } else {
       currentUser = authState.user!;
@@ -56,59 +57,70 @@ class _ReservationPageState extends State<ReservationPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Jika user anonim, hanya tampilkan pesan login
-    if (currentUser.isAnonymously) {
-      return Scaffold(
-        appBar: ReservationAppBar(
-          userName: "Guest",
-          userStatus: GestureDetector(
-            onTap: () {
-              context.pushNamed(Routes.profilePage.name);
-            },
-            child: const Text(
-              "Silahkan sign-in di sini",
-              style: TextStyle(
-                color: Colors.white54,
-                decoration: TextDecoration.underline,
-                decorationColor: Colors.white54,
-                decorationThickness: 2.0,
-              ),
-            ),
-          ),
-        ),
-        body: const Center(
-          child: Text(
-            "Silahkan login terlebih dahulu untuk melakukan reservasi",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is Authenticated) {
+          // Jika user anonim, hanya tampilkan pesan login
+          if (state.user.isAnonymously) {
+            return Scaffold(
+              appBar: ReservationAppBar(
+                userName: "Guest",
+                userStatus: GestureDetector(
+                  onTap: () async {
+                    // context.pushNamed(Routes.profilePage.name);
 
-    return Scaffold(
-      appBar: ReservationAppBar(
-        userName: currentUser.name,
-        userStatus: Text(currentUser.email,
-            style: const TextStyle(color: Colors.white54)),
-      ),
-      body: BlocBuilder<ReservationBloc, ReservationState>(
-        builder: (context, state) {
-          if (state is ReservationLoadingState) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is ReservationLoadedState) {
-            return _buildReservationContent(state);
-          } else if (state is ReservationFailureState) {
-            return Center(
-              child: Text(
-                'Terjadi kesalahan: ${state.message}',
-                style: const TextStyle(color: Colors.red),
+                    context.read<AuthBloc>().add(UserSignInGoogleEvent());
+                  },
+                  child: const Text(
+                    "Silahkan sign-in di sini",
+                    style: TextStyle(
+                      color: Colors.white54,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white54,
+                      decorationThickness: 2.0,
+                    ),
+                  ),
+                ),
+              ),
+              body: const Center(
+                child: Text(
+                  "Silahkan login terlebih dahulu untuk melakukan reservasi",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          } else {
+            return Scaffold(
+              appBar: ReservationAppBar(
+                userName: state.user.name,
+                userStatus: Text(state.user.email,
+                    style: const TextStyle(color: Colors.white54)),
+                userImageUrl: state.user.picture,
+              ),
+              body: BlocBuilder<ReservationBloc, ReservationState>(
+                builder: (context, state) {
+                  if (state is ReservationLoadingState) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is ReservationLoadedState) {
+                    return _buildReservationContent(state);
+                  } else if (state is ReservationFailureState) {
+                    return Center(
+                      child: Text(
+                        'Terjadi kesalahan: ${state.message}',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    );
+                  }
+                  return const Center(child: Text('Data tidak tersedia.'));
+                },
               ),
             );
           }
-          return const Center(child: Text('Data tidak tersedia.'));
-        },
-      ),
+        }
+
+        return Container();
+      },
     );
   }
 

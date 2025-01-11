@@ -16,6 +16,7 @@ class ReservationAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 80 + MediaQuery.of(context).padding.top,
       decoration: const BoxDecoration(
         color: ColorResource.primary,
       ),

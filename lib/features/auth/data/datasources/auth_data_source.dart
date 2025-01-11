@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tlb_app/core/common/entities/user.dart';
 import 'package:tlb_app/core/error/exceptions.dart';
 import 'package:tlb_app/features/auth/data/models/user_model.dart';
 
@@ -11,6 +12,8 @@ abstract interface class AuthDataSource {
   Future<UserModel?> getCurrentUserData();
   Future<void> signOut();
   Future<UserModel> convertAnonToGoogle();
+  Future<UserModel> updateUser(UserEntity userEntity, String namaDepan,
+      String? namaBelakang, String noHp);
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -86,7 +89,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       print('...response: ${response.user}...');
 
       final userModel = UserModel.fromJson(response.user!.toJson());
-
+      print('...userModel: $userModel...');
       return userModel;
     } on AuthException catch (e) {
       throw ServerException(e.message);
@@ -159,6 +162,68 @@ class AuthDataSourceImpl implements AuthDataSource {
       return userModel;
     } on AuthException catch (e) {
       throw ServerException(e.message);
+    } on ServerException catch (e) {
+      throw ServerException(e.message);
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel> updateUser(UserEntity userEntity, String namaDepan,
+      String? namaBelakang, String noHp) async {
+    try {
+      // Checking Data
+      final oldNamaDepan = userEntity.name.split(' ')[0];
+      final oldNamaBelakang = userEntity.name.split(' ').sublist(1).join(' ');
+      final oldNoHp = userEntity.phone;
+
+      // Mapping New Data
+      final Map<String, dynamic> updatedAttributes = {};
+
+      if (oldNamaDepan != namaDepan || oldNamaBelakang != namaBelakang) {
+        final fullName = namaBelakang == null || namaBelakang.isEmpty
+            ? namaDepan
+            : "$namaDepan $namaBelakang";
+        updatedAttributes['data'] = {'name': fullName};
+      }
+
+      if (oldNoHp != noHp) {
+        updatedAttributes['phone'] = noHp;
+      }
+
+      if (updatedAttributes.isEmpty) {
+        return userEntity as UserModel;
+      }
+
+      // final response = await supabaseClient.auth.updateUser(
+      //   UserAttributes(
+      //     phone: updatedAttributes['phone'],
+      //     data: updatedAttributes['data'],
+      //   ),
+      // );
+
+      final response = await supabaseClient.auth.admin.updateUserById(
+        userEntity.uid,
+        attributes: AdminUserAttributes(
+          phone: updatedAttributes['phone'],
+          userMetadata: {'name': updatedAttributes['name']},
+        ),
+      );
+
+      print(response.user);
+
+      if (response.user == null) {
+        throw Exception('Failed to update user data');
+      }
+
+      final userModel = (userEntity as UserModel).copyWith(
+        name: updatedAttributes['data'],
+        phone: updatedAttributes['phone'],
+      );
+
+      print(userModel);
+      return userModel;
     } on ServerException catch (e) {
       throw ServerException(e.message);
     } catch (e) {

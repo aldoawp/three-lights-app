@@ -12,6 +12,7 @@ import 'package:tlb_app/features/auth/domain/usecases/current_user.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_anonymous.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_google.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_out.dart';
+import 'package:tlb_app/features/auth/domain/usecases/user_update.dart';
 import 'package:tlb_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:tlb_app/features/catalogue/data/datasources/catalogue_data_sources.dart';
 import 'package:tlb_app/features/catalogue/data/repositories/catalogue_repository_impl.dart';
@@ -72,6 +73,7 @@ void initAuth() {
       appUserCubit: sl(),
       userSignOut: sl(),
       convertAnonToGoogle: sl(),
+      userUpdate: sl(),
     ),
   );
 
@@ -90,6 +92,9 @@ void initAuth() {
   );
   sl.registerLazySingleton(
     () => ConvertAnonToGoogle(sl()),
+  );
+  sl.registerLazySingleton(
+    () => UserUpdate(sl()),
   );
 
   // Repository

@@ -8,6 +8,7 @@ import 'package:tlb_app/features/auth/domain/usecases/current_user.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_anonymous.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_in_google.dart';
 import 'package:tlb_app/features/auth/domain/usecases/user_sign_out.dart';
+import 'package:tlb_app/features/auth/domain/usecases/user_update.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -19,6 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CurrentUser currentUser;
   final UserSignOut userSignOut;
   final ConvertAnonToGoogle convertAnonToGoogle;
+  final UserUpdate userUpdate;
 
   AuthBloc(
       {required this.userSignInAnonymously,
@@ -26,6 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       required this.currentUser,
       required this.userSignOut,
       required this.convertAnonToGoogle,
+      required this.userUpdate,
       required this.appUserCubit})
       : super(AuthInitial()) {
     // _setUpAuthListener();
@@ -36,6 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<UserSignInGoogleEvent>(_onSignInGoogle);
     on<UserSignOutEvent>(_onSignOut);
     on<UserLinkingAccountEvent>(_onConvertAccount);
+    on<UserUpdateEvent>(_onUserUpdate);
   }
   Future<void> _isUserLoggedIn(
       AuthIsUserLoggedIn event, Emitter<AuthState> emit) async {
@@ -98,6 +102,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       UserLinkingAccountEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     final res = await convertAnonToGoogle.call(NoParams());
+
+    res.fold(
+      (l) => emit(AuthError(error: l.message)),
+      (r) => _emitAuthSuccess(r, emit),
+    );
+  }
+
+  Future<void> _onUserUpdate(
+      UserUpdateEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    final res = await userUpdate.call(UpdateParams(
+        userEntity: event.entity,
+        namaDepan: event.namaDepan,
+        namaBelakang: event.namaBelakang,
+        noHp: event.noHp));
 
     res.fold(
       (l) => emit(AuthError(error: l.message)),

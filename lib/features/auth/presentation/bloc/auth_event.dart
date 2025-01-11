@@ -24,3 +24,16 @@ final class UserSignInGoogleEvent extends AuthEvent {}
 final class UserSignOutEvent extends AuthEvent {}
 
 final class UserLinkingAccountEvent extends AuthEvent {}
+
+final class UserUpdateEvent extends AuthEvent {
+  final UserEntity entity;
+  final String namaDepan;
+  final String? namaBelakang;
+  final String noHp;
+
+  UserUpdateEvent(
+      {required this.entity,
+      required this.namaDepan,
+      required this.namaBelakang,
+      required this.noHp});
+}
