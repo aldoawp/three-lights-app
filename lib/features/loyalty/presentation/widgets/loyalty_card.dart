@@ -26,6 +26,8 @@ class LoyaltyCard extends StatelessWidget {
             showModalBottomSheet(
               context: context,
               builder: (context) => const CongratulationsDrawer(),
+              showDragHandle: true,
+              isScrollControlled: true,
             );
           });
         }

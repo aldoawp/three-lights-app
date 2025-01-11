@@ -44,7 +44,11 @@ class GoogleUserContent extends StatelessWidget {
                           context.pushNamed(Routes.editProfilePage.name);
                         },
                         label: const Text("Edit profile"),
-                        icon: const Icon(Icons.edit, size: 18),
+                        icon: const Icon(
+                          Icons.edit,
+                          size: 18,
+                          color: ColorResource.primary,
+                        ),
                         iconAlignment: IconAlignment.end,
                         style: TextButton.styleFrom(
                           foregroundColor: Colors.grey[500],
