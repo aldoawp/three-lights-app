@@ -35,11 +35,15 @@ class QRScanButton extends StatelessWidget {
         mainAxisAlignment:
             MainAxisAlignment.center, // Centers content in the Row
         children: const [
-          Text('Pindai Kode QR'),
+          Text(
+            'Pindai Kode QR',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+          ),
           SizedBox(width: 8),
           Icon(
             Icons.qr_code,
             size: 20,
+            color: ColorResource.offWhite,
           ),
         ],
       ),
